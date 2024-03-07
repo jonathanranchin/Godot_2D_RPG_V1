@@ -1,0 +1,401 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnifuuujyafv6"]
+
+[ext_resource type="Script" path="res://scripts/CreatePartyMenu.gd" id="1_a12xt"]
+
+[node name="CreatePartyScene" type="Node2D"]
+position = Vector2(2, 0)
+script = ExtResource("1_a12xt")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_direction = 2
+offset_right = 137.0
+offset_bottom = 950.0
+columns = 5
+
+[node name="Character_1_Container" type="VBoxContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Character_1_Label" type="Label" parent="GridContainer/Character_1_Container"]
+layout_mode = 2
+text = "First Character"
+
+[node name="Reserve_Points_1" type="Label" parent="GridContainer/Character_1_Container"]
+layout_mode = 2
+
+[node name="Name_Container_1" type="VBoxContainer" parent="GridContainer/Character_1_Container"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="GridContainer/Character_1_Container/Name_Container_1"]
+layout_mode = 2
+text = "Name"
+
+[node name="LineEdit" type="LineEdit" parent="GridContainer/Character_1_Container/Name_Container_1"]
+layout_mode = 2
+
+[node name="strength_Container_1" type="VBoxContainer" parent="GridContainer/Character_1_Container"]
+layout_mode = 2
+
+[node name="strength_Label" type="Label" parent="GridContainer/Character_1_Container/strength_Container_1"]
+layout_mode = 2
+
+[node name="Increment_Str" type="Button" parent="GridContainer/Character_1_Container/strength_Container_1"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_Str" type="Button" parent="GridContainer/Character_1_Container/strength_Container_1"]
+layout_mode = 2
+text = "-"
+
+[node name="intellect_Container_1" type="VBoxContainer" parent="GridContainer/Character_1_Container"]
+layout_mode = 2
+
+[node name="intellect_Label" type="Label" parent="GridContainer/Character_1_Container/intellect_Container_1"]
+layout_mode = 2
+text = "Intellect"
+
+[node name="Increment_Int" type="Button" parent="GridContainer/Character_1_Container/intellect_Container_1"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_Int" type="Button" parent="GridContainer/Character_1_Container/intellect_Container_1"]
+layout_mode = 2
+text = "-"
+
+[node name="agility_Container_1" type="VBoxContainer" parent="GridContainer/Character_1_Container"]
+layout_mode = 2
+
+[node name="agility_Label" type="Label" parent="GridContainer/Character_1_Container/agility_Container_1"]
+layout_mode = 2
+text = "Agility"
+
+[node name="Increment_Agi" type="Button" parent="GridContainer/Character_1_Container/agility_Container_1"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_Agi" type="Button" parent="GridContainer/Character_1_Container/agility_Container_1"]
+layout_mode = 2
+text = "-"
+
+[node name="charisma_Container_1" type="VBoxContainer" parent="GridContainer/Character_1_Container"]
+layout_mode = 2
+
+[node name="charisma_Label" type="Label" parent="GridContainer/Character_1_Container/charisma_Container_1"]
+layout_mode = 2
+text = "Charisma"
+
+[node name="Increment_Chari" type="Button" parent="GridContainer/Character_1_Container/charisma_Container_1"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_Chari" type="Button" parent="GridContainer/Character_1_Container/charisma_Container_1"]
+layout_mode = 2
+text = "-"
+
+[node name="Character_2_Container" type="VBoxContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Character_2_Label" type="Label" parent="GridContainer/Character_2_Container"]
+layout_mode = 2
+text = "Second Character"
+
+[node name="Reserve_Points_2" type="Label" parent="GridContainer/Character_2_Container"]
+layout_mode = 2
+
+[node name="Name_Container_2" type="VBoxContainer" parent="GridContainer/Character_2_Container"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="GridContainer/Character_2_Container/Name_Container_2"]
+layout_mode = 2
+text = "Name"
+
+[node name="LineEdit" type="LineEdit" parent="GridContainer/Character_2_Container/Name_Container_2"]
+layout_mode = 2
+
+[node name="strength_Container_2" type="VBoxContainer" parent="GridContainer/Character_2_Container"]
+layout_mode = 2
+
+[node name="strength_Label" type="Label" parent="GridContainer/Character_2_Container/strength_Container_2"]
+layout_mode = 2
+text = "Strength"
+
+[node name="Increment_Str" type="Button" parent="GridContainer/Character_2_Container/strength_Container_2"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_Str" type="Button" parent="GridContainer/Character_2_Container/strength_Container_2"]
+layout_mode = 2
+text = "-"
+
+[node name="intellect_Container_2" type="VBoxContainer" parent="GridContainer/Character_2_Container"]
+layout_mode = 2
+
+[node name="intellect_Label" type="Label" parent="GridContainer/Character_2_Container/intellect_Container_2"]
+layout_mode = 2
+text = "Intellect"
+
+[node name="Increment_Int" type="Button" parent="GridContainer/Character_2_Container/intellect_Container_2"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_Int" type="Button" parent="GridContainer/Character_2_Container/intellect_Container_2"]
+layout_mode = 2
+text = "-"
+
+[node name="agility_Container_2" type="VBoxContainer" parent="GridContainer/Character_2_Container"]
+layout_mode = 2
+
+[node name="agility_Label" type="Label" parent="GridContainer/Character_2_Container/agility_Container_2"]
+layout_mode = 2
+text = "Agility"
+
+[node name="Increment_Agi" type="Button" parent="GridContainer/Character_2_Container/agility_Container_2"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_Agi" type="Button" parent="GridContainer/Character_2_Container/agility_Container_2"]
+layout_mode = 2
+text = "-"
+
+[node name="charisma_Container_2" type="VBoxContainer" parent="GridContainer/Character_2_Container"]
+layout_mode = 2
+
+[node name="charisma_Label" type="Label" parent="GridContainer/Character_2_Container/charisma_Container_2"]
+layout_mode = 2
+text = "Charisma"
+
+[node name="Increment_Chari" type="Button" parent="GridContainer/Character_2_Container/charisma_Container_2"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_Chari" type="Button" parent="GridContainer/Character_2_Container/charisma_Container_2"]
+layout_mode = 2
+text = "-"
+
+[node name="Character_3_Container" type="VBoxContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Character_3_Label" type="Label" parent="GridContainer/Character_3_Container"]
+layout_mode = 2
+text = "Third Character"
+
+[node name="Reserve_Points_3" type="Label" parent="GridContainer/Character_3_Container"]
+layout_mode = 2
+
+[node name="Name_Container_3" type="VBoxContainer" parent="GridContainer/Character_3_Container"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="GridContainer/Character_3_Container/Name_Container_3"]
+layout_mode = 2
+text = "Name"
+
+[node name="LineEdit" type="LineEdit" parent="GridContainer/Character_3_Container/Name_Container_3"]
+layout_mode = 2
+
+[node name="strength_Container_3" type="VBoxContainer" parent="GridContainer/Character_3_Container"]
+layout_mode = 2
+
+[node name="strength_Label" type="Label" parent="GridContainer/Character_3_Container/strength_Container_3"]
+layout_mode = 2
+text = "Strength"
+
+[node name="Increment_strength" type="Button" parent="GridContainer/Character_3_Container/strength_Container_3"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_strength" type="Button" parent="GridContainer/Character_3_Container/strength_Container_3"]
+layout_mode = 2
+text = "-"
+
+[node name="intellect_Container_3" type="VBoxContainer" parent="GridContainer/Character_3_Container"]
+layout_mode = 2
+
+[node name="intellect_Label" type="Label" parent="GridContainer/Character_3_Container/intellect_Container_3"]
+layout_mode = 2
+text = "Intellect"
+
+[node name="Increment_intellect" type="Button" parent="GridContainer/Character_3_Container/intellect_Container_3"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_intellect" type="Button" parent="GridContainer/Character_3_Container/intellect_Container_3"]
+layout_mode = 2
+text = "-"
+
+[node name="agility_Container_3" type="VBoxContainer" parent="GridContainer/Character_3_Container"]
+layout_mode = 2
+
+[node name="agility_Label" type="Label" parent="GridContainer/Character_3_Container/agility_Container_3"]
+layout_mode = 2
+text = "Agility"
+
+[node name="Increment_agility" type="Button" parent="GridContainer/Character_3_Container/agility_Container_3"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_agility" type="Button" parent="GridContainer/Character_3_Container/agility_Container_3"]
+layout_mode = 2
+text = "-"
+
+[node name="charisma_Container_3" type="VBoxContainer" parent="GridContainer/Character_3_Container"]
+layout_mode = 2
+
+[node name="charisma_Label" type="Label" parent="GridContainer/Character_3_Container/charisma_Container_3"]
+layout_mode = 2
+text = "Charisma"
+
+[node name="Increment_charisma" type="Button" parent="GridContainer/Character_3_Container/charisma_Container_3"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_charisma" type="Button" parent="GridContainer/Character_3_Container/charisma_Container_3"]
+layout_mode = 2
+text = "-"
+
+[node name="Character_4_Container" type="VBoxContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Character_4_Label" type="Label" parent="GridContainer/Character_4_Container"]
+layout_mode = 2
+text = "Fourth Character"
+
+[node name="Reserve_Points_4" type="Label" parent="GridContainer/Character_4_Container"]
+layout_mode = 2
+
+[node name="Name_Container_4" type="VBoxContainer" parent="GridContainer/Character_4_Container"]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="GridContainer/Character_4_Container/Name_Container_4"]
+layout_mode = 2
+text = "Name"
+
+[node name="LineEdit" type="LineEdit" parent="GridContainer/Character_4_Container/Name_Container_4"]
+layout_mode = 2
+
+[node name="strength_Container_4" type="VBoxContainer" parent="GridContainer/Character_4_Container"]
+layout_mode = 2
+
+[node name="strength_Label" type="Label" parent="GridContainer/Character_4_Container/strength_Container_4"]
+layout_mode = 2
+text = "Strength"
+
+[node name="Increment_strength" type="Button" parent="GridContainer/Character_4_Container/strength_Container_4"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_strength" type="Button" parent="GridContainer/Character_4_Container/strength_Container_4"]
+layout_mode = 2
+text = "-"
+
+[node name="intellect_Container_4" type="VBoxContainer" parent="GridContainer/Character_4_Container"]
+layout_mode = 2
+
+[node name="intellect_Label" type="Label" parent="GridContainer/Character_4_Container/intellect_Container_4"]
+layout_mode = 2
+text = "Intellect"
+
+[node name="Increment_intellect" type="Button" parent="GridContainer/Character_4_Container/intellect_Container_4"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_intellect" type="Button" parent="GridContainer/Character_4_Container/intellect_Container_4"]
+layout_mode = 2
+text = "-"
+
+[node name="agility_Container_4" type="VBoxContainer" parent="GridContainer/Character_4_Container"]
+layout_mode = 2
+
+[node name="agility_Label" type="Label" parent="GridContainer/Character_4_Container/agility_Container_4"]
+layout_mode = 2
+text = "Agility"
+
+[node name="Increment_agility" type="Button" parent="GridContainer/Character_4_Container/agility_Container_4"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_agility" type="Button" parent="GridContainer/Character_4_Container/agility_Container_4"]
+layout_mode = 2
+text = "-"
+
+[node name="charisma_Container_4" type="VBoxContainer" parent="GridContainer/Character_4_Container"]
+layout_mode = 2
+
+[node name="charisma_Label" type="Label" parent="GridContainer/Character_4_Container/charisma_Container_4"]
+layout_mode = 2
+text = "Charisma"
+
+[node name="Increment_charisma" type="Button" parent="GridContainer/Character_4_Container/charisma_Container_4"]
+layout_mode = 2
+text = "+"
+
+[node name="Decrement_charisma" type="Button" parent="GridContainer/Character_4_Container/charisma_Container_4"]
+layout_mode = 2
+text = "-"
+
+[node name="Proceed Button" type="Button" parent="GridContainer/Character_4_Container/charisma_Container_4"]
+layout_mode = 2
+
+[node name="Recap_Container" type="GridContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Recap_Label" type="Label" parent="GridContainer/Recap_Container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Recap Of The Characters In Your Party"
+
+[node name="Character_Recaps" type="GridContainer" parent="GridContainer/Recap_Container"]
+layout_mode = 2
+columns = 2
+
+[node name="Character_1_Recap" type="Label" parent="GridContainer/Recap_Container/Character_Recaps"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+
+[node name="Character_2_Recap" type="Label" parent="GridContainer/Recap_Container/Character_Recaps"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+
+[node name="Character_3_Recap" type="Label" parent="GridContainer/Recap_Container/Character_Recaps"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+
+[node name="Character_4_Recap" type="Label" parent="GridContainer/Recap_Container/Character_Recaps"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+
+[connection signal="text_changed" from="GridContainer/Character_1_Container/Name_Container_1/LineEdit" to="." method="_on_line_edit_text_changed" binds= [0]]
+[connection signal="pressed" from="GridContainer/Character_1_Container/strength_Container_1/Increment_Str" to="." method="_on_increment_button_pressed" binds= ["strength", 0]]
+[connection signal="pressed" from="GridContainer/Character_1_Container/strength_Container_1/Decrement_Str" to="." method="_on_decrement_button_pressed" binds= ["strength", 0]]
+[connection signal="pressed" from="GridContainer/Character_1_Container/intellect_Container_1/Increment_Int" to="." method="_on_increment_button_pressed" binds= ["intellect", 0]]
+[connection signal="pressed" from="GridContainer/Character_1_Container/intellect_Container_1/Decrement_Int" to="." method="_on_decrement_button_pressed" binds= ["intellect", 0]]
+[connection signal="pressed" from="GridContainer/Character_1_Container/agility_Container_1/Increment_Agi" to="." method="_on_increment_button_pressed" binds= ["agility", 0]]
+[connection signal="pressed" from="GridContainer/Character_1_Container/agility_Container_1/Decrement_Agi" to="." method="_on_decrement_button_pressed" binds= ["agility", 0]]
+[connection signal="pressed" from="GridContainer/Character_1_Container/charisma_Container_1/Increment_Chari" to="." method="_on_increment_button_pressed" binds= ["charisma", 0]]
+[connection signal="pressed" from="GridContainer/Character_1_Container/charisma_Container_1/Decrement_Chari" to="." method="_on_decrement_button_pressed" binds= ["charisma", 0]]
+[connection signal="text_changed" from="GridContainer/Character_2_Container/Name_Container_2/LineEdit" to="." method="_on_line_edit_text_changed" binds= [1]]
+[connection signal="pressed" from="GridContainer/Character_2_Container/strength_Container_2/Increment_Str" to="." method="_on_increment_button_pressed" binds= ["strength", 1]]
+[connection signal="pressed" from="GridContainer/Character_2_Container/strength_Container_2/Decrement_Str" to="." method="_on_decrement_button_pressed" binds= ["strength", 1]]
+[connection signal="pressed" from="GridContainer/Character_2_Container/intellect_Container_2/Increment_Int" to="." method="_on_increment_button_pressed" binds= ["intellect", 1]]
+[connection signal="pressed" from="GridContainer/Character_2_Container/intellect_Container_2/Decrement_Int" to="." method="_on_decrement_button_pressed" binds= ["intellect", 1]]
+[connection signal="pressed" from="GridContainer/Character_2_Container/agility_Container_2/Increment_Agi" to="." method="_on_increment_button_pressed" binds= ["agility", 1]]
+[connection signal="pressed" from="GridContainer/Character_2_Container/agility_Container_2/Decrement_Agi" to="." method="_on_decrement_button_pressed" binds= ["agility", 1]]
+[connection signal="pressed" from="GridContainer/Character_2_Container/charisma_Container_2/Increment_Chari" to="." method="_on_increment_button_pressed" binds= ["charisma", 1]]
+[connection signal="pressed" from="GridContainer/Character_2_Container/charisma_Container_2/Decrement_Chari" to="." method="_on_decrement_button_pressed" binds= ["charisma", 1]]
+[connection signal="text_changed" from="GridContainer/Character_3_Container/Name_Container_3/LineEdit" to="." method="_on_line_edit_text_changed" binds= [2]]
+[connection signal="pressed" from="GridContainer/Character_3_Container/strength_Container_3/Increment_strength" to="." method="_on_increment_button_pressed" binds= ["strength", 2]]
+[connection signal="pressed" from="GridContainer/Character_3_Container/strength_Container_3/Decrement_strength" to="." method="_on_decrement_button_pressed" binds= ["strength", 2]]
+[connection signal="pressed" from="GridContainer/Character_3_Container/intellect_Container_3/Increment_intellect" to="." method="_on_increment_button_pressed" binds= ["intellect", 2]]
+[connection signal="pressed" from="GridContainer/Character_3_Container/intellect_Container_3/Decrement_intellect" to="." method="_on_decrement_button_pressed" binds= ["intellect", 2]]
+[connection signal="pressed" from="GridContainer/Character_3_Container/agility_Container_3/Increment_agility" to="." method="_on_increment_button_pressed" binds= ["agility", 2]]
+[connection signal="pressed" from="GridContainer/Character_3_Container/agility_Container_3/Decrement_agility" to="." method="_on_decrement_button_pressed" binds= ["agility", 2]]
+[connection signal="pressed" from="GridContainer/Character_3_Container/charisma_Container_3/Increment_charisma" to="." method="_on_increment_button_pressed" binds= ["charisma", 2]]
+[connection signal="pressed" from="GridContainer/Character_3_Container/charisma_Container_3/Decrement_charisma" to="." method="_on_decrement_button_pressed" binds= ["charisma", 2]]
+[connection signal="text_changed" from="GridContainer/Character_4_Container/Name_Container_4/LineEdit" to="." method="_on_line_edit_text_changed" binds= [3]]
+[connection signal="pressed" from="GridContainer/Character_4_Container/strength_Container_4/Increment_strength" to="." method="_on_increment_button_pressed" binds= ["strength", 3]]
+[connection signal="pressed" from="GridContainer/Character_4_Container/strength_Container_4/Decrement_strength" to="." method="_on_decrement_button_pressed" binds= ["strength", 3]]
+[connection signal="pressed" from="GridContainer/Character_4_Container/intellect_Container_4/Increment_intellect" to="." method="_on_increment_button_pressed" binds= ["intellect", 3]]
+[connection signal="pressed" from="GridContainer/Character_4_Container/intellect_Container_4/Decrement_intellect" to="." method="_on_decrement_button_pressed" binds= ["intellect", 3]]
+[connection signal="pressed" from="GridContainer/Character_4_Container/agility_Container_4/Increment_agility" to="." method="_on_increment_button_pressed" binds= ["agility", 3]]
+[connection signal="pressed" from="GridContainer/Character_4_Container/agility_Container_4/Decrement_agility" to="." method="_on_decrement_button_pressed" binds= ["agility", 3]]
+[connection signal="pressed" from="GridContainer/Character_4_Container/charisma_Container_4/Increment_charisma" to="." method="_on_increment_button_pressed" binds= ["charisma", 3]]
+[connection signal="pressed" from="GridContainer/Character_4_Container/charisma_Container_4/Decrement_charisma" to="." method="_on_decrement_button_pressed" binds= ["charisma", 3]]
+[connection signal="pressed" from="GridContainer/Character_4_Container/charisma_Container_4/Proceed Button" to="." method="_on_proceed_button_pressed"]
