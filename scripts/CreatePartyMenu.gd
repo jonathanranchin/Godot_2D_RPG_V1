@@ -1,12 +1,11 @@
 extends Node2D
-
+var reserve_points = [ 7,7,7,7]
 var characters = [
 { "strength": 1,"intellect": 1,"agility": 1,"charisma": 1},
 {"strength": 1,"intellect": 1,"agility": 1,"charisma": 1},
 {"strength": 1,"intellect": 1,"agility": 1,"charisma": 1},
 {"strength": 1,"intellect": 1,"agility": 1,"charisma": 1}
 ]
-var reserve_points = [ 7,7,7,7]
 var life_pools := [["",""],["",""],["",""],["",""]]
 var action_deck := [[],[],[],[]]
 var spellnums = [
@@ -93,7 +92,7 @@ func update_ui():
 			if(abilities[0]["T"+str(m)+"A"][0]>0):
 				get_node(string6).text += "Abilities : " +"Tier "+str(m)+" Abilities" + " Draw " + str(abilities[0]["T"+str(m)+"A"][0]) + " choose "+ str(abilities[0]["T"+str(m)+"A"][1]) +"\n"
 		if (n==4):
-			if(reserve_points == [ 0,0,0,0]):
+			if(reserve_points == [ 0,0,0,0] and names != ["","","",""] ):
 				get_node("GridContainer/Character_4_Container/charisma_Container_4/Proceed Button").text += "Proceed with this Party\n To Pick Spells and Abilities\n And then to the adventure itself"
 
 func add_lives(lives: int, character) -> void:
@@ -239,7 +238,32 @@ func generatedeck(strength,intellect,agility,charisma,character):
 	add_hp_cards(strength,agility,character)
 	pass
 
+func array_2_string(arr):
+	return JSON.stringify(arr)
+
+func load():
+	var file = FileAccess.open("res://saves/party_data_1.tres", FileAccess.READ)
+	var content = file.get_as_text()
+	return content
+
+func save(content):
+	var file = FileAccess.open("res://saves/party_data_1.tres", FileAccess.WRITE)
+	file.store_string(content)
+
+func save_data():
+	var data = {
+		"characters": characters,
+		"life_pools": life_pools,
+		"action_deck": action_deck,
+		"spellnums": spellnums,
+		"abilities": abilities,
+		"names": names
+	}
+	var json_string = JSON.stringify(data)
+	save(json_string)
+
 func _on_proceed_button_pressed():
+	save_data()
 	get_tree().change_scene_to_file("res://Menus/AddSpells&Abilities.tscn")
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

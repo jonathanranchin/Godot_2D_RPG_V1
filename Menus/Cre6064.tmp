@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/CreatePartyMenu.gd" id="1_a12xt"]
 
-[node name="CreatePartyScene" type="Node2D" groups=["Persist"]]
+[node name="CreatePartyScene" type="Node2D"]
 position = Vector2(2, 0)
 script = ExtResource("1_a12xt")
 
