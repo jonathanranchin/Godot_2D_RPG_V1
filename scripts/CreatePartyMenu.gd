@@ -1,5 +1,5 @@
 extends Node2D
-var reserve_points = [ 7,7,7,7]
+var reserve_points = [ 6,6,6,6]
 var characters = [
 { "strength": 1,"intellect": 1,"agility": 1,"charisma": 1},
 {"strength": 1,"intellect": 1,"agility": 1,"charisma": 1},
@@ -20,7 +20,7 @@ var abilities = [
 { "T1A": [0,0],"T2A": [0,0],"T3A": [0,0],"T4A": [0,0]},
 { "T1A": [0,0],"T2A": [0,0],"T3A": [0,0],"T4A": [0,0]},
 ]
-var names = ["","","",""]
+var names = ["Name1","Name2","Name3","Name4"]
 # Function to handle LineEdit content change
 func _on_line_edit_text_changed(new_text: String, characternum):
 	# Update the string variable with the new content
