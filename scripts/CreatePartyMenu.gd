@@ -1,5 +1,5 @@
 extends Node2D
-var reserve_points = [ 6,6,6,6]
+var reserve_points = [ 6,6,0,0]
 var characters = [
 { "strength": 1,"intellect": 1,"agility": 1,"charisma": 1},
 {"strength": 1,"intellect": 1,"agility": 1,"charisma": 1},

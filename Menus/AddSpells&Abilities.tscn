@@ -12,10 +12,65 @@ offset_bottom = 40.0
 [node name="GridContainer" type="GridContainer" parent="GridContainer"]
 layout_mode = 2
 
-[node name="BoxContainer" type="BoxContainer" parent="GridContainer/GridContainer"]
+[node name="Name_Label_1" type="Label" parent="GridContainer/GridContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="."]
-offset_right = 247.0
-offset_bottom = 23.0
-text = "Choose your spells and abilities."
+[node name="Spells_Container" type="BoxContainer" parent="GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Spells_label" type="Label" parent="GridContainer/GridContainer/Spells_Container"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Spells Draft
+"
+
+[node name="GridContainer" type="GridContainer" parent="GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Spells_1" type="Label" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Validate_Spell_1" type="Button" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Reroller_Spell_1" type="Button" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Spells_2" type="Label" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Validate_Spell_2" type="Button" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Reroller_Spell_2" type="Button" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Spells_3" type="Label" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Validate_Spell_3" type="Button" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Reroller_Spell_3" type="Button" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Spells_4" type="Label" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Validate_Spell_4" type="Button" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Reroller_Spell_4" type="Button" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Spells_5" type="Label" parent="GridContainer/GridContainer/GridContainer"]
+layout_mode = 2
+
+[connection signal="pressed" from="GridContainer/GridContainer/GridContainer/Validate_Spell_1" to="." method="spell_validate" binds= [1]]
+[connection signal="pressed" from="GridContainer/GridContainer/GridContainer/Reroller_Spell_1" to="." method="spell_reroll" binds= [1]]
+[connection signal="pressed" from="GridContainer/GridContainer/GridContainer/Validate_Spell_2" to="." method="spell_validate" binds= [2]]
+[connection signal="pressed" from="GridContainer/GridContainer/GridContainer/Reroller_Spell_2" to="." method="spell_reroll" binds= [2]]
+[connection signal="pressed" from="GridContainer/GridContainer/GridContainer/Validate_Spell_3" to="." method="spell_validate" binds= [3]]
+[connection signal="pressed" from="GridContainer/GridContainer/GridContainer/Reroller_Spell_3" to="." method="spell_reroll" binds= [3]]
+[connection signal="pressed" from="GridContainer/GridContainer/GridContainer/Validate_Spell_4" to="." method="spell_validate" binds= [4]]
+[connection signal="pressed" from="GridContainer/GridContainer/GridContainer/Reroller_Spell_4" to="." method="spell_reroll" binds= [4]]

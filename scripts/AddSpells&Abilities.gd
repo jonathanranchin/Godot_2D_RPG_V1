@@ -8,6 +8,10 @@ var abilities
 var names
 var spells = []
 var ability = []
+var rerolls = []
+var draftedspells = []
+var validation = [false,false,false,false]
+var current_char = 0
 
 var T1Spells = [
 	{ "name": "Arcane Bolt","type": "ATK","range": [3,10],"effect": "Inflict 3 damage on a single foe"},
@@ -53,6 +57,51 @@ var T4Spells = [
 	{ "name": "Searing Tempest","type": "ATK","range": [3,10],"effect": "Summon a raging storm of fire and lightning that engulfs a target area within 10 meters (3 out 3 area). All enemies within the area suffer 14 damage and draw 2 miss cards. The storm persists, dealing 4 damage to enemies within the area for the next three rounds."},
 ]
 
+var spellbook = {
+		"T1Spells" : [
+			{ "name": "Arcane Bolt","type": "ATK","range": [3,10],"effect": "Inflict 3 damage on a single foe"},
+			{ "name": "Shielding Aura","type": "SHD","range": [0,4],"effect": "Add 1 Shielding card to all allies' HP pools"},
+			{ "name": "Elemental Dart","type": "ATK","range": [3,8],"effect": "Inflict 3 damage on a single foe. If the target is adjacent to a wall, add 1 extra damage."},
+			{ "name": "Blink","type": "MVE","range": [0,0],"effect": "Move yourself up to 2 meters away"},
+			{ "name": "Minor Heal","type": "HEAL","range": [0,2],"effect": "Heal 3 HP for a single ally."},
+			{ "name": "Resonating Shield","type": "SHD","range": [0,2],"effect": "Add 2 Shielding cards to a single ally's HP pool and grant them 1 Parry card."},
+			{ "name": "Energy Surge","type": "UTI","range": [0,0],"effect": "Add a cast of any tier to your action pool."},
+			{ "name": "Arcane Insight","type": "UTI","range": [0,0],"effect": "Draw 2 additional cards from your action pool discard this turn."},
+			{ "name": "Frost Nova","type": "ATK","range": [0,3],"effect": "Inflict 3 damage on all foes within 2 meters and discard 1 random movement card from their action pools."},
+			{ "name": "Stone Skin","type": "SHD","range": [0,2],"effect": "Add 3 Shielding cards to a single ally's HP pool."},
+			{ "name": "Wind Gust","type": "UTI","range": [3,12],"effect": "Push a single foe up to 2 meters away."},
+			{ "name": "Arcane Pulsation","type": "UTI","range": [0,0],"effect": "Draw 1 additional card from your action pool this turn and next turn."},
+		],
+		"T2Spells" : [
+			{ "name": "Flame Burst","type": "ATK","range": [3,6],"effect": "Inflict 4 damage to a single foe and add 1 extra damage on their next action."},
+			{ "name": "Chain Lightning","type": "ATK","range": [2,5],"effect": "Inflict 4 damage to 2 targets within 3 meters of each other. Discard 1 cast or attack card from each target's action pool."},
+			{ "name": "Icy Grasp","type": "ATK","range": [3,9],"effect": "Inflict 4 damage to a single foe and discard 1 movement card from their action pool."},
+			{ "name": "Vitalizing Surge","type": "HEAL","range": [0,3],"effect": "Heal 4 HP for a single ally and grant them +1 damage bonus to their next attack"},
+			{ "name": "Break Morale","type": "UTI","range": [3,6],"effect": "Discard 2 random cast cards from a single foe's action pool."},
+			{ "name": "Gust of Wind","type": "UTI","range": [3,15],"effect": "Move a single foe up to 4 meters away and discard 1 movement card from their action pool."},
+			{ "name": "Mystic Shield","type": "SHD","range": [0,2],"effect": "Add 4 Parry cards to a single ally's HP pool."},
+			{ "name": "Astral Step","type": "UTI","range": [0,2],"effect": "Move yourself up to 3 meters away and draw 1 additional card from your action pool."},
+			{ "name": "Crippling Blow","type": "ATK","range": [3,6],"effect": "Inflict 5 damage to a single foe and discard 1 attack card from their action pool."},
+			{ "name": "Fire of the Hearth","type": "HEAL","range": [0,2],"effect": "Add 5 life cards to an allies health pool"},
+		],
+		"T3Spells" : 
+		[
+			{ "name": "Inferno Burst","type": "ATK","range": [1,3],"effect": "Unleash a burst of flames, dealing 6 damage to all foes"},
+			{ "name": "Cryomancy","type": "UTI","range": [1,4],"effect": "Freeze the ground. Any character in the zone discards two random cards from their action pool."},
+			{ "name": "Windstorm","type": "UTI","range": [0,4],"effect": "Create a powerful windstorm that pushes all foes 3 meters from self."},
+			{ "name": "Gravity Well","type": "UTI","range": [3,8],"effect": "Create a localized gravitational field within a 4-meter radius area, pulling all characters and foes within 1 meter toward a target tile and immobilizing them for one round."},
+			{ "name": "Life Siphon","type": "ATK","range": [1,3],"effect": "Drain the life force of a single foe within 2 meters, dealing 5 damage and healing yourself for the same amount."},
+			{ "name": "Elemental Shield","type": "SHD","range": [0,3],"effect": "Envelop a single ally within 3 meters in an elemental shield that grants them 7 shield."},
+		],
+		"T4Spells" : 
+			[
+				{ "name": "Celestial Reckoning","type": "ATK/HEAL","range": [0,10],"effect": "Call upon the power of the heavens to rain down celestial energy upon a chosen location (2 on 2 area) within 10 meters. All enemies within the area suffer 8 damage, and all allies gain 4 shielding and 1 life to their life pools."},
+				{ "name": "Eternal Resurgence","type": "HEAL","range": [0,2],"effect": "Harness the energy of life itself to resurrect a fallen ally within 5 meters. The ally returns to the battle with half of their maximum HP and gains 6 magical protection for the next three rounds."},
+				{ "name": "Time Dilation","type": "UTI","range": [0,7],"effect": "Manipulate the fabric of time around an ally within 7 meters, granting them an additional turn immediately after their current turn. This effect lasts for the next two rounds."},
+				{ "name": "Searing Tempest","type": "ATK","range": [3,10],"effect": "Summon a raging storm of fire and lightning that engulfs a target area within 10 meters (3 out 3 area). All enemies within the area suffer 14 damage and draw 2 miss cards. The storm persists, dealing 4 damage to enemies within the area for the next three rounds."},
+			],
+		}
+
 var T1Abilities = [
 	{ "name": "Inspiring Words","target/test": ["Ally","agility"],"range": [1,5],"effect": "Target ally performs an easy SP test. If successful, add 1 action card to their action pool."},
 	{ "name": "Uncooth Remark","target/test": ["Enemy","agility"],"range": [1,5],"effect": "Target foe performs an easy SP test. If failed, remove 1 action card from their action pool."},
@@ -94,11 +143,124 @@ var T4Abilities = [
 	{ "name": "Mental Anahilation","target/test": ["Enemy","intellecthard"],"range": [0,0],"effect": "Perform a hard KN-PO test. If successful, all foes within 4 range switch sides for the current turn."},
 ]
 
+func spell_validate(tier: int):
+	var character = current_char
+	spellnums[character]["T"+str(tier)+"S"][0] = 0
+	var string5 = "GridContainer/GridContainer/GridContainer/Validate_Spell_"+str(tier)
+	get_node(string5).text = "This batch of spells for Tier "+str(tier)+" has been validated"
+	string5 = "GridContainer/GridContainer/GridContainer/Reroller_Spell_"+str(tier)
+	get_node(string5).text = "This batch of spells for Tier "+str(tier)+" has been validated"
+	validation[tier-1] = true
+	print(validation)
+	if (validation == [true,true,true,true]):
+		spells.append(draftedspells)
+		current_char += 1
+			#get_tree().change_scene_to_file("res://Menus/AddSpells&Abilities.tscn")
+		print(spells.size())
+		draftedspells = []
+		rerolls = []
+		validation = [false,false,false,false]
+		if(current_char!=4):
+			print(names[current_char])
+		if(current_char==4):
+			print("All characters have spells")
+			for j in range(0,spells.size()):
+				#print(str(names[j])+" spells :\n")
+				print(spells[j])
+				for m in range(0,spells[j].size()):
+					print('')
+					#print(spells[j][m])
+			return
+		else:
+			spell_setup_subset(current_char)
+
+	# Perform rerolls
+func spell_reroll(tier: int):
+	var character = current_char
+	var tries = spellnums[character]["T"+str(tier)+"S"][0]
+	var real = tier
+	var j = character
+	if (tries<1):
+		var string4 = "GridContainer/GridContainer/GridContainer/Reroller_Spell_"+str(real)
+		get_node(string4).text = "This batch of spells for Tier "+str(real)+" you have no rerolls remaining"
+		spell_validate(tier)
+		return
+	var subset = []
+	var rerolled = generate_random_subset(spellbook["T"+str(tier)+"Spells"],spellnums[character]["T"+str(tier)+"S"][1])
+	var new_subset = generate_random_subset(rerolled, spellnums[character]["T"+str(tier)+"S"][1])
+	spellnums[character]["T"+str(tier)+"S"][0] -= 1
+	tries = spellnums[character]["T"+str(tier)+"S"][0]
+	var string2 = "GridContainer/GridContainer/GridContainer/Spells_"+str(real)
+	get_node(string2).text = "Tier " + str(real) + " Spells either choose this batch or reroll\n"
+	draftedspells[j] = new_subset
+	for m in range(0,draftedspells[j].size()):
+		get_node(string2).text += "Name: " + draftedspells[j][m]["name"]+ " Type: "+draftedspells[j][m]["type"] + " "
+		get_node(string2).text += "Range: " + str(draftedspells[j][m]["range"][0]) + "/" + str(draftedspells[j][m]["range"][1]) + "\nEffect: " + draftedspells[j][m]["effect"] +"\n"
+		var string = "GridContainer/GridContainer/GridContainer/Validate_Spell_"+str(real)
+		get_node(string).text = "Keep this batch of spells for Tier"+str(real)
+		var string3 = "GridContainer/GridContainer/GridContainer/Reroller_Spell_"+str(real)
+		get_node(string3).text = "Reroll this batch of spells for Tier "+str(real)+" you have "+ str(tries) +" remaining"
+	
+
+func generate_random_subset(array_data: Array, subset_size: int) -> Array:
+	var subset = []
+	var remaining_indices = []
+
+	# Populate remaining_indices with indices of array_data
+	for i in range(array_data.size()):
+		remaining_indices.append(i)
+
+	while subset.size() < subset_size and remaining_indices.size() > 0:
+		var index = randi() % remaining_indices.size()
+		var element_index = remaining_indices[index]
+		var element = array_data[element_index]
+
+		subset.append(element)
+
+		# Remove the selected index from remaining_indices
+		remaining_indices.remove_at(index)
+
+	return subset
+
+func spell_setup_subset(n):
+	var string4 = "GridContainer/GridContainer/Name_Label_1"
+	get_node(string4).text = names[current_char]
+	draftedspells.append(generate_random_subset(T1Spells,spellnums[n]["T1S"][1]))
+	draftedspells.append(generate_random_subset(T2Spells,spellnums[n]["T2S"][1]))
+	draftedspells.append(generate_random_subset(T3Spells,spellnums[n]["T3S"][1]))
+	draftedspells.append(generate_random_subset(T4Spells,spellnums[n]["T4S"][1]))
+	rerolls.append([spellnums[n]["T1S"][0],spellnums[n]["T2S"][0],spellnums[n]["T3S"][0],spellnums[n]["T4S"][0]])
+	var picks = [spellnums[n]["T1S"][1],spellnums[n]["T2S"][1],spellnums[n]["T3S"][1],spellnums[n]["T4S"][1]]
+	#print(rerolls)
+	#print(picks.size())
+	for j in range(0,draftedspells.size()):
+		if(draftedspells[j].size()==0):
+			spell_validate(j+1)
+		for m in range(0,draftedspells[j].size()):
+			var real = j+1
+			var string2 = "GridContainer/GridContainer/GridContainer/Spells_"+str(real)
+			if(m==0):
+				get_node(string2).text = "Tier " + str(real) + " Spells either choose this batch or reroll\n"
+			get_node(string2).text += "Name: " + draftedspells[j][m]["name"]+ " Type: "+draftedspells[j][m]["type"] + " "
+			get_node(string2).text += "Range: " + str(draftedspells[j][m]["range"][0]) + "/" + str(draftedspells[j][m]["range"][1]) + "\nEffect: " + draftedspells[j][m]["effect"] +"\n"
+			var string = "GridContainer/GridContainer/GridContainer/Validate_Spell_"+str(real)
+			get_node(string).text = "Keep this batch of spells for Tier"+str(real)
+			var string3 = "GridContainer/GridContainer/GridContainer/Reroller_Spell_"+str(real)
+			get_node(string3).text = "Reroll this batch of spells for Tier "+str(real)+" you have "+ str(spellnums[n]["T"+str(real)+"S"][0]) +" remaining"
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	loader()
 	#print(abilities)
-	pass # Replace with function body.
+	spell_setup_subset(0)
+	update_ui()
+	#pass # Replace with function body.
+
+func update_ui():
+	for o in range(0,1):
+		var string4 = "GridContainer/GridContainer/Name_Label_1"
+		get_node(string4).text = names[o]
+	pass
 
 func loader():
 	var file = FileAccess.open("res://saves/party_data_1.tres", FileAccess.READ)
