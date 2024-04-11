@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdn8045g3lkpe"]
+
+[ext_resource type="Script" path="res://scripts/ChooseEquipment&Backstories.gd" id="1_yp8pv"]
+
+[node name="ChooseEquipment&backstories" type="Node2D"]
+script = ExtResource("1_yp8pv")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+columns = 4
+
+[node name="GridContainer1" type="GridContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="GridContainer/GridContainer1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GridContainer/GridContainer1/BoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="GridContainer/GridContainer1/BoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer2" type="GridContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="GridContainer/GridContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GridContainer/GridContainer2/BoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="GridContainer/GridContainer2/BoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer3" type="GridContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="GridContainer/GridContainer3"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GridContainer/GridContainer3/BoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="GridContainer/GridContainer3/BoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer4" type="GridContainer" parent="GridContainer"]
+layout_mode = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="GridContainer/GridContainer4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="GridContainer/GridContainer4/BoxContainer"]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="GridContainer/GridContainer4/BoxContainer"]
+layout_mode = 2

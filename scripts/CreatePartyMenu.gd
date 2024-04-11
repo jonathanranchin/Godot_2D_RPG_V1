@@ -222,7 +222,8 @@ func add_abilities_cards(charisma, character) -> void:
 		action_deck[character].append("AC");
 		action_deck[character].append("AC");
 		action_deck[character].append("AC");
-		abilities[character]["T1A"] = [5,1]
+		action_deck[character].append("AC");
+		abilities[character]["T1A"] = [5,2]
 		abilities[character]["T2A"] = [3,1]
 		abilities[character]["T3A"] = [3,1]
 		abilities[character]["T4A"] = [1,1]
@@ -265,6 +266,7 @@ func save_data():
 func _on_proceed_button_pressed():
 	save_data()
 	get_tree().change_scene_to_file("res://Menus/AddSpells&Abilities.tscn")
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
