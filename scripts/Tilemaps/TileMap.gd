@@ -1,7 +1,5 @@
 extends TileMap
 
-var Gridsize = 4
-var Dict = {}
 var characters
 
 var character1 = {
@@ -14,19 +12,22 @@ var character1 = {
 var character2 = {
 	"damage"  = 0,
 	"damage_reduction"  = 0,
-	"action_hand"  = []
+	"action_hand"  = [],
+	"action_pool" = [[],[]]
 }
 
 var character3 = {
 	"damage"  = 0,
 	"damage_reduction"  = 0,
-	"action_hand"  = []
+	"action_hand"  = [],
+	"action_pool" = [[],[]]
 }
 
 var character4 = {
 	"damage"  = 0,
 	"damage_reduction"  = 0,
-	"action_hand"  = []
+	"action_hand"  = [],
+	"action_pool" = [[],[]]
 }
 
 
@@ -34,21 +35,9 @@ var character4 = {
 func _ready():
 	loader()
 	characterLoader()
-	pass
-#	for x in Gridsize:
-#		for y in Gridsize:
-#			Dict[str(Vector2(x,y))]={"Type":"Grass"}
-#			set_cell(0, Vector2(x,y),0,Vector2i(0,0),0)
-#	print(Dict)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#var tile = local_to_map(get_global_mouse_position())
-	#for x in Gridsize:
-	#	for y in Gridsize:
-	#		erase_cell(1,Vector2(x,y))
-	#if Dict.has(str(tile)):
-	#	set_cell(1,tile,1,Vector2i(0,0),0)
 	pass
 
 func characterLoader():
@@ -82,8 +71,18 @@ func characterLoader():
 	character1["action_pool"].append(character1["armor"][0]["action_deck"])
 	character1["action_pool"] = [character1["action_pool"],shuffle_array(character1["action_pool"])]
 	character1["action_hand"] = extract_and_remove_first_n(shuffle_array(character1["action_pool"][1]),5)
+	character1["action_pool"][1] = character1["action_pool"][1].slice(5, character1["action_pool"][1].size())
 	character1["life_pool"][1] = shuffle_string(character1["life_pool"][1])
 
+func draw_hand(deck,hand):
+	if deck.size>=5:
+		hand += extract_and_remove_first_n(shuffle_array(deck),5)
+		deck = deck.slice(5, deck.size())
+	if(deck.size()>=1 and deck.size()<5):
+		hand += extract_and_remove_first_n(shuffle_array(deck),deck.size())
+		deck = []
+		print("Round over for Character")
+	pass
 
 func loader():
 	var file = FileAccess.open("res://saves/party_data_3.tres", FileAccess.READ)
