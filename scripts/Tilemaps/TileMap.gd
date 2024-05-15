@@ -35,6 +35,9 @@ var character4 = {
 func _ready():
 	loader()
 	characterLoader()
+	var chara = [character1,character2,character3,character4]
+	get_parent().get_char_data(chara)
+	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -56,23 +59,120 @@ func characterLoader():
 		"agility" : characters[0]["agility"],
 		"charisma" : characters[0]["charisma"]
 	}
+	character2 = {
+		"name" : characters[1]["name"],
+		"life_pool" : characters[1]["life_pool"],
+		"action_pool" : characters[1]["action_deck"],
+		"spells" : characters[1]["spells"],
+		"abilities" : characters[1]["abilities"],
+		"weapons" : characters[1]["weapons"],
+		"weapons_equiped" : characters[1]["weapons_equiped"],
+		"armor" : characters[1]["armor"],
+		"backstory" : characters[1]["backstory"],
+		"strength" : characters[1]["strength"],
+		"intellect" : characters[1]["intellect"],
+		"agility" : characters[1]["agility"],
+		"charisma" : characters[1]["charisma"]
+	}
+	character3 = {
+		"name" : characters[2]["name"],
+		"life_pool" : characters[2]["life_pool"],
+		"action_pool" : characters[2]["action_deck"],
+		"spells" : characters[2]["spells"],
+		"abilities" : characters[2]["abilities"],
+		"weapons" : characters[2]["weapons"],
+		"weapons_equiped" : characters[2]["weapons_equiped"],
+		"armor" : characters[2]["armor"],
+		"backstory" : characters[2]["backstory"],
+		"strength" : characters[2]["strength"],
+		"intellect" : characters[2]["intellect"],
+		"agility" : characters[2]["agility"],
+		"charisma" : characters[2]["charisma"]
+	}
+	character4 = {
+		"name" : characters[3]["name"],
+		"life_pool" : characters[3]["life_pool"],
+		"action_pool" : characters[3]["action_deck"],
+		"spells" : characters[3]["spells"],
+		"abilities" : characters[3]["abilities"],
+		"weapons" : characters[3]["weapons"],
+		"weapons_equiped" : characters[3]["weapons_equiped"],
+		"armor" : characters[3]["armor"],
+		"backstory" : characters[3]["backstory"],
+		"strength" : characters[3]["strength"],
+		"intellect" : characters[3]["intellect"],
+		"agility" : characters[3]["agility"],
+		"charisma" : characters[3]["charisma"]
+	}
 	character1["life_pool"][1] += character1["life_pool"][0]
+	character2["life_pool"][1] += character2["life_pool"][0]
+	character3["life_pool"][1] += character3["life_pool"][0]
+	character4["life_pool"][1] += character4["life_pool"][0]
 	for n in range(0,character1["weapons_equiped"].size()):
 		character1["life_pool"][1] += character1["weapons_equiped"][n]["life_pool"]
+	for n in range(0,character2["weapons_equiped"].size()):
+		character2["life_pool"][1] += character2["weapons_equiped"][n]["life_pool"]
+	for n in range(0,character3["weapons_equiped"].size()):
+		character3["life_pool"][1] += character3["weapons_equiped"][n]["life_pool"]
+	for n in range(0,character4["weapons_equiped"].size()):
+		character4["life_pool"][1] += character4["weapons_equiped"][n]["life_pool"]
 	character1["life_pool"][1] += character1["armor"][0]["life_pool"]
+	character2["life_pool"][1] += character2["armor"][0]["life_pool"]
+	character3["life_pool"][1] += character3["armor"][0]["life_pool"]
+	character4["life_pool"][1] += character4["armor"][0]["life_pool"]
 	for n in range(0,character1["weapons_equiped"].size()):
 			character1["damage"] =  character1["weapons_equiped"][n]["damage"]
+	for n in range(0,character2["weapons_equiped"].size()):
+			character2["damage"] =  character2["weapons_equiped"][n]["damage"]
+	for n in range(0,character3["weapons_equiped"].size()):
+			character3["damage"] =  character3["weapons_equiped"][n]["damage"]
+	for n in range(0,character4["weapons_equiped"].size()):
+			character4["damage"] =  character4["weapons_equiped"][n]["damage"]
 	if (character1["strength"] == 3):
 		character1["damage"] +=  1
 		if (character1["strength"] == 4):
 			character1["damage"] +=  1
+	if (character2["strength"] == 3):
+		character2["damage"] +=  1
+		if (character2["strength"] == 4):
+			character2["damage"] +=  1
+	if (character3["strength"] == 3):
+		character3["damage"] +=  1
+		if (character3["strength"] == 4):
+			character3["damage"] +=  1
+	if (character4["strength"] == 3):
+		character4["damage"] +=  1
+		if (character4["strength"] == 4):
+			character4["damage"] +=  1
 	var num = character1["armor"][0]["damage_reduction"]
 	character1["damage_reduction"] = int(num)
+	num = character2["armor"][0]["damage_reduction"]
+	character2["damage_reduction"] = int(num)
+	num = character3["armor"][0]["damage_reduction"]
+	character3["damage_reduction"] = int(num)
+	num = character4["armor"][0]["damage_reduction"]
+	character4["damage_reduction"] = int(num)
 	character1["action_pool"].append(character1["armor"][0]["action_deck"])
+	character2["action_pool"].append(character2["armor"][0]["action_deck"])
+	character3["action_pool"].append(character3["armor"][0]["action_deck"])
+	character4["action_pool"].append(character4["armor"][0]["action_deck"])
 	character1["action_pool"] = [character1["action_pool"],shuffle_array(character1["action_pool"])]
 	character1["action_hand"] = extract_and_remove_first_n(shuffle_array(character1["action_pool"][1]),5)
 	character1["action_pool"][1] = character1["action_pool"][1].slice(5, character1["action_pool"][1].size())
 	character1["life_pool"][1] = shuffle_string(character1["life_pool"][1])
+	character2["action_pool"] = [character2["action_pool"],shuffle_array(character2["action_pool"])]
+	character2["action_hand"] = extract_and_remove_first_n(shuffle_array(character2["action_pool"][1]),5)
+	character2["action_pool"][1] = character2["action_pool"][1].slice(5, character2["action_pool"][1].size())
+	character2["life_pool"][1] = shuffle_string(character2["life_pool"][1])
+	character3["action_pool"] = [character3["action_pool"],shuffle_array(character3["action_pool"])]
+	character3["action_hand"] = extract_and_remove_first_n(shuffle_array(character3["action_pool"][1]),5)
+	character3["action_pool"][1] = character3["action_pool"][1].slice(5, character3["action_pool"][1].size())
+	character3["life_pool"][1] = shuffle_string(character3["life_pool"][1])
+	character4["action_pool"] = [character4["action_pool"],shuffle_array(character4["action_pool"])]
+	character4["action_hand"] = extract_and_remove_first_n(shuffle_array(character4["action_pool"][1]),5)
+	character4["action_pool"][1] = character4["action_pool"][1].slice(5, character4["action_pool"][1].size())
+	character4["life_pool"][1] = shuffle_string(character4["life_pool"][1])
+
 
 func draw_hand(deck,hand):
 	if deck.size>=5:
