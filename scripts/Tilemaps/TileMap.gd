@@ -175,6 +175,8 @@ func characterLoader():
 
 
 func draw_hand(deck,hand):
+	if hand:
+		print(hand)
 	if deck.size>=5:
 		hand += extract_and_remove_first_n(shuffle_array(deck),5)
 		deck = deck.slice(5, deck.size())

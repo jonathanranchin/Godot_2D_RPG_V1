@@ -33,11 +33,14 @@ var checked_actions
 var chosen_action
 var action_target
 var healed # animation keyword
+var shield_active = 0
 var shielded # animation keyword
 var struck # animation keyword
 var buffed # animation keyword
 var debuffed # animation keyword
 var populate = "spells"
+var status = "alive"
+# life pool is stored in this variable local["life_pool"] 0 is theoretical and 1 is current
 
 func _ready():
 	attacks = 70
@@ -57,7 +60,6 @@ func show_chara_stats(charac):
 		string5 = "../../Active_Character/Label6"
 		get_node(string5).text = "Attacks : " + str(attack_pool)+'\n'
 		#if check == false:
-			#print(local["abilities"])
 		populate_actions()
 		populate_spells()
 				#check = true 
@@ -117,7 +119,7 @@ func populate_actions():
 			else:
 				parent_node.hide()
 
-func on_target_spell_button_pressed(max_range,min_range,spell_type,spell):#spell is complete
+func on_target_spell_button_pressed(max_range,min_range,spell):#spell is complete
 	if self == get_parent().get_parent().active_character:
 		var arr = []
 		var all = chara + enemies
@@ -138,7 +140,7 @@ func on_target_spell_button_pressed(max_range,min_range,spell_type,spell):#spell
 		parent_node.add_child(button)
 		button.pressed.connect(self.spell_bind_chooser.bind(spell,arr))
 
-func on_target_action_button_pressed(max_range,min_range,action_type,action):
+func on_target_action_button_pressed(max_range,min_range,action):
 	if self == get_parent().get_parent().active_character:
 		var arr = []
 		var all = chara + enemies
@@ -216,11 +218,11 @@ func spell_bind_chooser(spell,targets):
 func action_target_chooser(target):
 	action_target = target
 	var button = Label.new()
-	var string4 = "../../Spells_and_abilities/Action_Container"
+	var string4 = "../../Spells_and_abilities/Ability_Container"
 	var parent_node = get_node(string4)
 	button.text += checked_actions["name"]+ " has \n"+ str(action_target.name) + "\nas target"
 	parent_node.add_child(button)
-	print(checked_spell["name"]+ " has "+ str(action_target) + " as target")
+	print(checked_actions["name"]+ " has "+ str(action_target.name) + " as target")
 
 func spell_target_chooser(target):
 	spell_target = target
@@ -309,9 +311,11 @@ func cast_spells(spell,caster,targets) ->bool:
 		if spell["type"]=="SHD":
 			if targets is CharacterBody2D:
 				targets.shielded = 1
+				targets.shield_active = 1
 			else:
 				for target in targets[0]:
 					target.shielded = 1
+					target.shield_active = 1
 		if spell["type"]=="ATK":
 			if targets is CharacterBody2D:
 				print("struck")
@@ -408,24 +412,33 @@ func cast_spells(spell,caster,targets) ->bool:
 
 func use_action(action,actor,targets) -> bool:
 	acting = true
-	if acty>0:
+	print(acty)
+	print(action["target/test"][0])
+	if acty > 0 and action["target/test"][0]=="Ally":
+		#$AnimatedSprite2D.play("acting_positive")
+		$AnimatedSprite2D.animation = "acting_positive"
+		if targets is CharacterBody2D:
+			targets.buffed = 1
+		else:
+			for target in targets[0]:
+				target.buffed = 1
 		acty -= 1
-		$AnimatedSprite2D.play("acting")
-		if action["target/test"][0]=="Ally":
-			if targets is CharacterBody2D:
-				targets.buffed = 1
-			else:
-				for target in targets[0]:
-					target.buffed = 1
-		if action["target/test"][0]=="Enemy":
-			if targets is CharacterBody2D:
-				targets.debuffed = 1
-			else:
-				for target in targets[0]:
-					target.debuffed = 1
 		return false
-	if acty ==0:
-		acty=70
+	if acty>0 and action["target/test"][0]=="Enemy":
+		print("de_buffing")
+		$AnimatedSprite2D.play("acting_negative")
+		#$AnimatedSprite2D.animation = "acting_positive"
+		if targets is CharacterBody2D:
+			targets.debuffed = 1
+		else:
+			for target in targets[0]:
+				target.debuffed = 1
+		acty -= 1
+		return false
+	if acty == 0 or acty > 0:
+		acting = false
+		acty = 70
+		return true
 	return false
 
 func warp(meters,direction): #neeed to research
@@ -446,28 +459,156 @@ func warp(meters,direction): #neeed to research
 	pass
 
 func gain_to_life_pool(lives,blocks,parries,shields,buffs): #Todo *4
-	#var time = 1000
-	#healed = 1
-	#while(time>0):
-		#$AnimatedSprite2D.animation = "healing"
-		#time -= 1
-		#print(time)
-	#healed = 0
-	print("Completed")
+	if lives>0:
+		if lifepool_checker(local["life_pool"][1],"l")< lifepool_checker(local["life_pool"][0],"l"):
+			if lifepool_checker(local["life_pool"][0],"l") - (lifepool_checker(local["life_pool"][1],"l") + lives) <= 0:
+				for life in lives:
+					local["life_pool"][1] += "l"
+			else: 
+				var missing_life = lifepool_checker(local["life_pool"][0],"l") - lifepool_checker(local["life_pool"][1],"l")
+				for life in missing_life:
+					local["life_pool"][1] += "l"
+		else:
+			print("Character has full lifepoints and cannot be healed")
+			return
+		print(local["life_pool"][1])
+		return
+	if blocks>0:
+		if lifepool_checker(local["life_pool"][1],"b")< lifepool_checker(local["life_pool"][0],"b")+1:
+			if lifepool_checker(local["life_pool"][0],"b") - (lifepool_checker(local["life_pool"][1],"b") +blocks+1) <= 0:
+				for blockss in blocks:
+					local["life_pool"][1] += "b"
+			else: 
+				var missing_blocks = (lifepool_checker(local["life_pool"][0],"b")+1) - lifepool_checker(local["life_pool"][1],"b")
+				for blockss in missing_blocks:
+					local["life_pool"][1] += "b"
+		else:
+			print("Character has full lifepoints and cannot be healed")
+			return
+		print(local["life_pool"][1])
+		return
+	if parries>0:
+		pass
+	if shields>0:
+		pass
+	if buffs>0:
+		pass
+	print(local["life_pool"][1])
 	pass
 
 func lose_to_life_pool(lives,blocks,parries,shields,buffs):
-	print("Lose to life")
-	pass
+	if lives>0:
+		pass
+	if blocks>0:
+		pass
+	if parries>0:
+		pass
+	if shields>0:
+		pass
+	if buffs>0:
+		pass
+	print(local["life_pool"][1])
 
 func gain_to_action_hand(yards,move,action_cards,T1casts,T2casts,T3casts,T4casts,random):
-	print("Gain to action")
+	if yards>0:
+		pass
+	if move>0:
+		pass
+	if action_cards>0:
+		pass
+	if T1casts>0:
+		pass
+	if T2casts>0:
+		pass
+	if T3casts>0:
+		pass
+	if T4casts>0:
+		pass
+	if random>0:
+		pass
+	print(local["action_hand"])
+	print(local["action_deck"])
+	print("Action gain")
 	pass
 
 func lose_to_action_hand(yards,move,action_cards,T1casts,T2casts,T3casts,T4casts,random):
-	print("Lose to action")
+	if yards>0:
+		pass
+	if move>0:
+		pass
+	if action_cards>0:
+		pass
+	if T1casts>0:
+		pass
+	if T2casts>0:
+		pass
+	if T3casts>0:
+		pass
+	if T4casts>0:
+		pass
+	if random>0:
+		pass
+	print(local["action_hand"])
+	print(local["action_deck"])
+	print("Action lost")
 	pass
 
+func draw_card_deck_hand():
+	print(local["action_hand"])
+	print(local["action_deck"])
+	print("Draw done")
+	pass
+
+func take_damage(damage_amount,special):
+	var random = RandomNumberGenerator.new()  # Create a random number generator
+	random.randomize()  # Seed the RNG with a random value
+
+	# Convert the life pool string into an array for easier manipulation
+	var life_pool_array = []
+	for char in local["life_pool"][1]:
+		life_pool_array.append(char)
+
+	# Randomly remove 'damage_amount' characters from the life pool
+	while damage_amount > 0 and len(life_pool_array) > 0:
+		var index = random.randi_range(0, len(life_pool_array) - 1)  # Get a random index
+		var blocked = false
+		var parried = false
+		if special == "critical" and life_pool_array[index]=="l":
+			damage_amount += 1 
+			pass
+		print(life_pool_array[index])
+		if(life_pool_array[index]=="p"):
+			parried = true
+		if(life_pool_array[index]=="b"):
+			blocked = true
+		life_pool_array.remove_at(index)  # Remove the character at the random index
+		damage_amount -= 1  # Decrement the damage amount
+		if blocked==true and special != "rend":
+			break
+		if life_pool_array.size() == 0:
+			$AnimatedSprite2D.animation = "death"
+			while $AnimatedSprite2D.is_playing():
+				await(get_tree().create_timer(0.1).timeout)
+			$CollisionShape2D.set_deferred("disabled", true)
+			$AnimatedSprite2D.stop()
+			status = "dead"
+			return "Dead"
+	# Convert the modified array back to a string
+	local["life_pool"][1] = "".join(life_pool_array)
+
+	# Check if there are any 'l' characters left in the updated life pool
+	if 'l' not in local["life_pool"][1]:
+		$AnimatedSprite2D.animation = "death"
+		while $AnimatedSprite2D.is_playing():
+			await(get_tree().create_timer(0.1).timeout)
+		$CollisionShape2D.set_deferred("disabled", true)
+		$AnimatedSprite2D.stop()
+		status = "dead"
+		return "Dead"
+	print(local["life_pool"][1])
+	return local["life_pool"][1]  # Otherwise, return the updated life pool
+
+# used for hand processing
 func categorize_cards(card_array):
 	var move = 0
 	var atk = 0
@@ -500,15 +641,32 @@ func categorize_cards(card_array):
 	actions = action
 	attack_pool = atk
 	movecapital = move_array[move]
-	print(str(casts)+' '+ str(actions)+' '+str(attack_pool)+ ' '+str(movecapital))
+	#print(str(casts)+' '+ str(actions)+' '+str(attack_pool)+ ' '+str(movecapital))
 
+func lifepool_checker(string_to_check: String, letter_to_check: String) -> int:
+	# Ensure that the letter_to_check is a single character
+	if letter_to_check.length() != 1:
+		push_error("letter_to_check should be a single character")
+		return -1
+	
+	# Initialize a counter
+	var count = 0
+	
+	# Loop through the string and count occurrences of letter_to_check
+	for i in range(string_to_check.length()):
+		if string_to_check[i] == letter_to_check:
+			count += 1
+	
+	return count
+
+# General Movement and animation processsing
 func _physics_process(delta):
 	var horizontal_direction = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	var vertical_direction = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	attacking = Input.get_action_strength("attack")
 	casting = Input.get_action_strength("cast")
 	acting = Input.get_action_strength("action")
-	var healing = healed
+	#var healing = healed
 	# Only move if this character is the active character
 	if self == get_parent().get_parent().active_character:
 		# Horizontal movement
@@ -563,15 +721,15 @@ func _physics_process(delta):
 						v = cast_spells(checked_spell,self,spell_target) #spell,caster,targets
 				else:
 					print("No casts remaining !")
-			else:
-				$AnimatedSprite2D.animation = "default"
+			#else:
+				#$AnimatedSprite2D.animation = "default"
 		if horizontal_direction == 0 and vertical_direction == 0 and int(attacking) == 0 and int(casting)==0:
-			if(int(actions)>0):
-				if(action_target and chosen_action):
-					var v = false
-					#$AnimatedSprite2D.play("casting")
-					if(v==false):
-						v = use_action(checked_spell,self,spell_target)
+			if(int(acting) >0):
+				if(action_target is Array or action_target is CharacterBody2D and int(actions)>0):
+					if checked_actions["target/test"][0]=="Enemy" or checked_actions["target/test"][0]=="Ally":
+						var v = false
+						if(v==false):
+							v = use_action(checked_actions,self,action_target)
 				else:
 					print("No actions remaining !")
 			else:
@@ -582,6 +740,8 @@ func _physics_process(delta):
 	if self != get_parent().get_parent().active_character:
 		if healed == 1:
 			$AnimatedSprite2D.animation = "healing"
+		if shielded == 1 or shield_active == 1:
+			$AnimatedSprite2D.animation = "shielding"
 		#else:
 			#$AnimatedSprite2D.animation = "default"
 

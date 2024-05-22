@@ -13,6 +13,7 @@ var shielded # animation keyword
 var struck # animation keyword
 var buffed # animation keyword
 var debuffed # animation keyword
+var shield_active
 @export var player: CharacterBody2D
 @onready var navigation_agent := $NavigationAgent2D as NavigationAgent2D
 
@@ -31,6 +32,8 @@ func _physics_process(_delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			velocity.y = move_toward(velocity.y, 0, SPEED)
 			end_turn()
+	else:
+		$AnimatedSprite2D.animation = "default"
 	move_and_slide()
 
 func makepath() -> void:
