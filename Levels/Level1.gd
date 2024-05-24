@@ -22,12 +22,12 @@ func initialize():
 	for child in get_node("Neutrals").get_children():
 		if child is CharacterBody2D:
 			neutrals.append(child)
-	#var index = 0
-	#for character in characters:
-		#character.local = chara[index]
-		##print(chara[index]["name"])
-		#character.show_chara_stats(chara[index])
-		#index += 1
+	var index = 0
+	for character in characters:
+		character.local = chara[index]
+		#print(chara[index]["name"])
+		character.show_chara_stats(chara[index])
+		index += 1
 	# Set the active character to the first one
 	active_character = characters[0]
 

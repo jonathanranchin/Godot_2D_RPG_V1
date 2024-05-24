@@ -46,7 +46,7 @@ func _ready():
 	attacks = 70
 
 func show_chara_stats(charac):
-	local = charac
+	#local = charac
 	if(local!=null):
 		categorize_cards(local["action_hand"])
 		var string5 = "../../Active_Character/Label2"
@@ -82,7 +82,7 @@ func populate_spells():
 					button.text = str(local["spells"][n][m]["name"])
 					parent_node.add_child(button)
 					usable_spells.append(local["spells"][n][m])
-					button.pressed.connect(self.on_target_spell_button_pressed.bind(spell_ranges[local["spells"][n][m]["range"][1]],spell_ranges[local["spells"][n][m]["range"][0]],local["spells"][n][m]["type"],local["spells"][n][m]))
+					button.pressed.connect(self.on_target_spell_button_pressed.bind(spell_ranges[local["spells"][n][m]["range"][1]],spell_ranges[local["spells"][n][m]["range"][0]],local["spells"][n][m]))
 		if casts[n] == 0:
 			var btn_node = get_node(string4)
 			btn_node.hide()
@@ -336,7 +336,7 @@ func cast_spells(spell,caster,targets) ->bool:
 		if spell["name"] == "Stone Skin" and targets is CharacterBody2D:
 			targets.gain_to_life_pool(0,0,0,3,0);
 		if spell["name"] == "Mystic Shield" and targets is CharacterBody2D:
-			targets.gain_to_life_pool(0,0,4,0,0);
+			targets.gain_to_life_pool(0,0,0,4,0);
 		if spell["name"] == "Elemental Shield" and targets is CharacterBody2D:
 			targets.gain_to_life_pool(0,0,0,7,0);
 		if spell["name"] == "Shielding Aura" and targets.size()>=1: 
@@ -475,7 +475,7 @@ func gain_to_life_pool(lives,blocks,parries,shields,buffs): #Todo *4
 		return
 	if blocks>0:
 		if lifepool_checker(local["life_pool"][1],"b")< lifepool_checker(local["life_pool"][0],"b")+1:
-			if lifepool_checker(local["life_pool"][0],"b") - (lifepool_checker(local["life_pool"][1],"b") +blocks+1) <= 0:
+			if lifepool_checker(local["life_pool"][0],"b")+1 - (lifepool_checker(local["life_pool"][1],"b") +blocks) <= 0:
 				for blockss in blocks:
 					local["life_pool"][1] += "b"
 			else: 
@@ -483,19 +483,55 @@ func gain_to_life_pool(lives,blocks,parries,shields,buffs): #Todo *4
 				for blockss in missing_blocks:
 					local["life_pool"][1] += "b"
 		else:
-			print("Character has full lifepoints and cannot be healed")
+			print("Character has full blocks and cannot get anymore")
 			return
 		print(local["life_pool"][1])
 		return
 	if parries>0:
-		pass
+		if lifepool_checker(local["life_pool"][1],"p")< lifepool_checker(local["life_pool"][0],"p")+4:
+			if lifepool_checker(local["life_pool"][0],"p")+4 - (lifepool_checker(local["life_pool"][1],"p")+ parries) <= 0:
+				for blockss in parries:
+					local["life_pool"][1] += "p"
+			else: 
+				var missing_parries = (lifepool_checker(local["life_pool"][0],"p")+4) - lifepool_checker(local["life_pool"][1],"p")
+				for blockss in missing_parries:
+					local["life_pool"][1] += "p"
+		else:
+			print("Character has maximum parries and cannot get anymore")
+			return
+		print(local["life_pool"][1])
+		return
 	if shields>0:
-		pass
+		if local["life_pool"][1].length()< local["life_pool"][0].length()*2:
+			if local["life_pool"][0].length()*2 - (local["life_pool"][1].length() + shields) <= 0:
+				for blockss in shields:
+					local["life_pool"][1] += "s"
+			else: 
+				for blockss in shields/2:
+					local["life_pool"][1] += "s"
+		else:
+			print("Character has maximum shields and cannot get anymore")
+			return
+		print(local["life_pool"][1])
+		return
 	if buffs>0:
-		pass
+		if lifepool_checker(local["life_pool"][1],"u")< lifepool_checker(local["life_pool"][0],"u")+3:
+			if lifepool_checker(local["life_pool"][0],"u")+3 - (lifepool_checker(local["life_pool"][1],"u")+ parries) <= 0:
+				for blockss in buffs:
+					local["life_pool"][1] += "u"
+			else: 
+				var missing_parries = (lifepool_checker(local["life_pool"][0],"u")+3) - lifepool_checker(local["life_pool"][1],"u")
+				for blockss in missing_parries:
+					local["life_pool"][1] += "u"
+		else:
+			print("Character has maximum buffs and cannot get anymore")
+			return
+		print(local["life_pool"][1])
+		return
 	print(local["life_pool"][1])
-	pass
+	return
 
+#not implemented to characters (must be added to enemies for alpha)
 func lose_to_life_pool(lives,blocks,parries,shields,buffs):
 	if lives>0:
 		pass
@@ -511,25 +547,46 @@ func lose_to_life_pool(lives,blocks,parries,shields,buffs):
 
 func gain_to_action_hand(yards,move,action_cards,T1casts,T2casts,T3casts,T4casts,random):
 	if yards>0:
-		pass
+		for yard in yards:
+			movecapital += 15
 	if move>0:
-		pass
+		for yard in move:
+			movecapital += 25
 	if action_cards>0:
-		pass
+		for ac in action_cards:
+			actions += 1
 	if T1casts>0:
-		pass
+		for T1C in T1casts:
+			casts[0] +=1
 	if T2casts>0:
-		pass
+		for T2C in T2casts:
+			casts[1] +=1
 	if T3casts>0:
-		pass
+		for T3C in T3casts:
+			casts[2] +=1
 	if T4casts>0:
-		pass
+		for T4C in T4casts:
+			casts[3] +=1
 	if random>0:
-		pass
+		var rng = RandomNumberGenerator.new()
+		rng.randomize()
+		for ran in random:
+			var random_number = rng.randi_range(0, 59)
+			if random_number < 10 and random_number >=0:
+				movecapital += 25
+			if random_number < 20 and random_number >=10:
+				actions += 1
+			if random_number < 30 and random_number >=20:
+				casts[0] +=1
+			if random_number < 40 and random_number >=30:
+				casts[1] +=1
+			if random_number < 50 and random_number >=40:
+				casts[2] +=1
+			if random_number < 60 and random_number >=50:
+				casts[3] +=1
 	print(local["action_hand"])
-	print(local["action_deck"])
+	print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
 	print("Action gain")
-	pass
 
 func lose_to_action_hand(yards,move,action_cards,T1casts,T2casts,T3casts,T4casts,random):
 	if yards>0:
@@ -549,13 +606,13 @@ func lose_to_action_hand(yards,move,action_cards,T1casts,T2casts,T3casts,T4casts
 	if random>0:
 		pass
 	print(local["action_hand"])
-	print(local["action_deck"])
+	print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
 	print("Action lost")
 	pass
 
 func draw_card_deck_hand():
 	print(local["action_hand"])
-	print(local["action_deck"])
+	print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
 	print("Draw done")
 	pass
 
@@ -617,6 +674,7 @@ func categorize_cards(card_array):
 	for card in card_array:
 		if card == "YARD":
 			move += 1
+			remove_first_card(local["action_hand"], "YARD")
 		if card == "-YARD" or card == "-YARD,-YARD":
 			if(move>0):
 				move -= 1
@@ -637,10 +695,10 @@ func categorize_cards(card_array):
 		elif card == "ATK":
 			atk += 1
 			#attack_cards.append(card)
-	casts = spl
-	actions = action
-	attack_pool = atk
-	movecapital = move_array[move]
+	casts += spl
+	actions += action
+	attack_pool += atk
+	movecapital += move_array[move]
 	#print(str(casts)+' '+ str(actions)+' '+str(attack_pool)+ ' '+str(movecapital))
 
 func lifepool_checker(string_to_check: String, letter_to_check: String) -> int:
