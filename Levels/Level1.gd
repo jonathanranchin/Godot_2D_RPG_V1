@@ -26,7 +26,7 @@ func initialize():
 	for character in characters:
 		character.local = chara[index]
 		#print(chara[index]["name"])
-		character.show_chara_stats(chara[index])
+		#character.show_chara_stats(chara[index])
 		index += 1
 	# Set the active character to the first one
 	active_character = characters[0]
@@ -46,12 +46,16 @@ func play_turn():
 func next_character():
 	current_character_index += 1
 	if current_character_index >= characters.size() and turner ==0:
+		characters[current_character_index-1].recycler(characters[current_character_index-1])
+		characters[current_character_index-1].draw_card_deck_hand(characters[current_character_index-1])
 		turner = 1
 		current_character_index = 0
 	if current_character_index >= enemies.size() and turner == 1:
 		turner = 0
 		current_character_index = 0
 	if (turner==0) :
+		characters[current_character_index-1].recycler(characters[current_character_index-1])
+		characters[current_character_index-1].draw_card_deck_hand(characters[current_character_index-1])
 		active_character = characters[current_character_index]
 	if (turner==1) :
 		active_character = enemies[current_character_index]

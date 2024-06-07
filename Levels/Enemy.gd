@@ -5,7 +5,6 @@ var enemies
 const SPEED = 96.0
 var movecapital
 var range_array = [26,35,40,46,56,65,75,85,95,105,115,124,134,144] #14 ranges
-var Name = "Jack"
 var life_pool = "lbplllll"
 var status = "active"
 var healed # animation keyword
@@ -34,6 +33,8 @@ func _physics_process(_delta: float) -> void:
 			end_turn()
 	else:
 		$AnimatedSprite2D.animation = "default"
+		if struck == 1:
+			$AnimatedSprite2D.animation = "struck"
 	move_and_slide()
 
 func makepath() -> void:
