@@ -9,6 +9,7 @@ var neutrals = []
 var current_character_index = 0 # Index of the current character
 var enemy_character_index = 0
 var turner = 0
+var roaster = []
 @onready var Tilemap = $TileMap
 # Function to initialize characters
 func initialize():
@@ -25,11 +26,28 @@ func initialize():
 	var index = 0
 	for character in characters:
 		character.local = chara[index]
-		#print(chara[index]["name"])
-		#character.show_chara_stats(chara[index])
+		roaster.append([character.local["name"],character.local["agility"],0,false])
 		index += 1
+	for enemy in enemies:
+		roaster.append([enemy.local.name,enemy.local.agility,0,false])
+	for unit in roaster:
+		var random_number = randi_range(1, 15)
+		unit[2] = unit[1] * (unit[1]/2) + 5 + random_number
+	roaster = sort_array_by_third_element(roaster)
+	prints(roaster)
 	# Set the active character to the first one
 	active_character = characters[0]
+
+
+func sort_array_by_third_element(array_of_arrays):
+	var n = array_of_arrays.size()
+	for i in range(n):
+		for j in range(0, n - i - 1):
+			if array_of_arrays[j][2] < array_of_arrays[j + 1][2]:
+				var temp = array_of_arrays[j]
+				array_of_arrays[j] = array_of_arrays[j + 1]
+				array_of_arrays[j + 1] = temp
+	return array_of_arrays
 
 # Function to play the turn
 func play_turn():
@@ -81,44 +99,7 @@ func show_chara_stats():
 func _ready():
 	initialize()
 	play_turn()
-	#loop_over_tiles(0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
-
-# Function to loop over tiles and get tile information
-#func loop_over_tiles(val):
-	## Get all used cells
-	#var used_cells = Tilemap.get_used_cells(val)
-#
-	#for cell in used_cells:
-		## Get the tile's source ID (to determine the tile type)
-		#var source_id = Tilemap.get_cell_source_id(0, cell)  # 0 is the first layer
-		#var arr = []
-		#if source_id == -1:
-			#print(cell)
-		#else:
-			#arr.append(cell)
-			##print("Tile at {cell} has source ID:", source_id)
-		#print(arr)
-		## Get world position of the tile
-		#var world_pos = Tilemap.local_to_map(cell)
-#
-		## Check for character bodies at this world position
-		##check_for_characters(world_pos)
-
-# Function to check for character bodies at a specific world position
-#func check_for_characters(world_pos):
-	## Get the direct space state from the 2D world
-	#var space_state = get_world_2d().direct_space_state
-	#
-	## Get all bodies that intersect with this point
-	#var intersecting_bodies = space_state.intersect_point(world_pos)  # true to include collisions
-	#
-	## Check for character bodies
-	#for body in intersecting_bodies:
-		#if body.is_in_group("characters"):  # Check if it's a character
-			#print("Character found at position {world_pos}")
-
-

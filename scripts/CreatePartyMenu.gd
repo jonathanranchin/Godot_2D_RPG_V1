@@ -107,9 +107,9 @@ func add_statuses(statuses: int, character) -> void:
 	for n in statuses:
 		life_pools[character][0] += "p"
 
-func add_shields(shields: int, character) -> void:
-	for n in shields:
-		life_pools[character][0] += "s"
+#func add_shields(shields: int, character) -> void:
+	#for n in shields:
+		#life_pools[character][0] += "s"
 
 func add_hp_cards(strength,agility,character):
 	if(strength==1):

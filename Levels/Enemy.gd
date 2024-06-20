@@ -13,9 +13,108 @@ var struck # animation keyword
 var buffed # animation keyword
 var debuffed # animation keyword
 var shield_active
+var local
+var en_storage = [
+	[
+		{
+			"name":"Luther",
+			"class":"Axe",
+			"behavior":"def_leader",
+			"strength":2,
+			"intellect":1,
+			"agility":4,
+			"charisma":1,
+			"life_pool":["lllllllllbbpppb","lllllllllbbpppb"],
+			"action_pool":[["T1C","ATK","ATK","ATK","ATK","YARD","YARD","YARD","YARD","YARD","AC","YARD"],[]],
+			"action_hand":[],
+			"background":"Former soldier from the countryside, joined the Black Hand for adventure.",
+			"weapon":{"name":"Hatchet","damage":2,"range":2},
+			"armor":{"name":"Sailors' Garb","life_pool":"b","action_deck":"YARD","damage_reduction":0,"price":5},
+			"dialogue": "Gytro be a liar! \n Varik will be skining him soon enarhf!",
+			"surrendered": "All I be knowing iz that,\n the captain had a letter somewhere.",
+		},
+		{
+			"name":"Vera",
+			"class":"Axe",
+			"behavior":"def_leader",
+			"strength":1,
+			"intellect":2,
+			"agility":3,
+			"charisma":3,
+			"life_pool":["llllllbppb","llllllbppb"],
+			"action_pool":[["T1C","T1C","T1C","T2C","T2C","T3C","ATK","ATK","YARD","YARD","YARD","AC","AC","AC","YARD"],[]],
+			"action_hand":[],
+			"background":"Former barmaid with a knack for getting into trouble, joined the Black Hand for excitement.",
+			"weapon":{"name":"Hatchet","damage":2,"range":2},
+			"armor":{"name":"Sailors' Garb","life_pool":"b","action_deck":"YARD","damage_reduction":0,"price":5},
+			"dialogue": "You look good stranger. \n Surrender I'll take good care of you !",
+			#medium CH-LO check.
+			"surrendered": "Twas a nobleman, who hired the cap. I never saw.",
+		},
+		{
+			"name":"Captain Varik",
+			"class":"Enemy_Leader",
+			"behavior":"slay_neutral",
+			"strength":4,
+			"intellect":1,
+			"agility":2,
+			"charisma":1,
+			"life_pool":["lllllllllllllbbbppbbp","lllllllllllllbbbppbbp"],
+			"action_pool":[["T1C","ATK","ATK","YARD","YARD","YARD","AC","YARD"],[]],
+			"action_hand":[],
+			"background":"Former soldier from the countryside, joined the Black Hand recently.",
+			"weapon":{"name":"Heavy Longsword","damage":4,"range":3},
+			"armor":{"name":"Armored sailor's suit","life_pool":"bbp","action_deck":"YARD","damage_reduction":1,"price":50},
+			"dialogue": "I'll have yer head Gytro.\n Surrender, I'll take good care of yee !",
+			#medium CH-LO check.
+			"surrendered": "Twas a nobleman, who hired the cap. I never saw.",
+		},
+		{
+			"name":"Kara",
+			"class":"Bow",
+			"behavior":"kiter",
+			"strength":1,
+			"intellect":2,
+			"agility":3,
+			"charisma":2,
+			"life_pool":["llllllbppb","llllllbppb"],
+			"action_pool":[["T1C","T1C","T2C","ATK","ATK","ATK","YARD","YARD","YARD","YARD","AC","AC","YARD"],[]],
+			"action_hand":[],
+			"background":"Street-smart and agile, used to be a scout for a noble's household.",
+			"weapon":{"name":"Short Bow","damage":2,"range":12},
+			"armor":{"name":"Sailors' Garb","life_pool":"b","action_deck":"YARD","damage_reduction":0,"price":5},
+			"dialogue": "Stays silent.",
+			"surrendered": "Remains silent.",
+		},
+		{
+			"name":"Braxton",
+			"class":"Bow",
+			"behavior":"kiter",
+			"strength":2,
+			"intellect":1,
+			"agility":3,
+			"charisma":1,
+			"life_pool":["lllllllllbbppb","lllllllllbbppb"],
+			"action_pool":[["T1C","ATK","ATK","ATK","YARD","YARD","YARD","YARD","AC","YARD"],[]],
+			"action_hand":[],
+			"background":" Ex-forester with a knack for survival, joined the pirates for a chance at riches.",
+			"weapon":{"name":"Short Bow","damage":2,"range":12},
+			"armor":{"name":"Sailors' Garb","life_pool":"b","action_deck":"YARD","damage_reduction":0,"price":5},
+			"dialogue": "I'll feather ya full of arrows.",
+			"surrendered": "I'm just here for coin,\nplease let ma go!",
+		}
+	]
+]
 @export var player: CharacterBody2D
 @onready var navigation_agent := $NavigationAgent2D as NavigationAgent2D
 
+func _ready():
+	for elements in en_storage:
+		for element in elements:
+			if element.name == name:
+				local = element
+				#prints(local.name, local.agility)
+	
 
 func _physics_process(_delta: float) -> void:
 	if movecapital == 105:
@@ -23,6 +122,7 @@ func _physics_process(_delta: float) -> void:
 	if self == get_parent().get_parent().active_character and status=="active":
 		var dir = to_local(navigation_agent.get_next_path_position()).normalized()
 		if(movecapital>0):
+			$AnimatedSprite2D.flip_h = true
 			velocity = dir*SPEED
 			movecapital = movecapital -1
 			$AnimatedSprite2D.animation = "walk_left"
@@ -66,7 +166,7 @@ func take_damage(damage_amount,special):
 		var blocked = false
 		var parried = false
 		if special == "critical" and life_pool_array[index]=="l":
-			damage_amount += 1 
+			damage_amount += 1
 			pass
 		print(life_pool_array[index])
 		if(life_pool_array[index]=="p"):
@@ -99,11 +199,6 @@ func take_damage(damage_amount,special):
 		return "Dead"
 	print(life_pool)
 	return life_pool  # Otherwise, return the updated life pool
-
-
-func _ready():
-	#makepath()
-	pass
 
 func end_turn():
 	var level = get_parent().get_parent()

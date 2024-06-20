@@ -32,15 +32,18 @@ var usable_actions = [] #get actions if they are available
 var checked_actions
 var chosen_action
 var action_target
-var healed # animation keyword
+var healed = 0  # animation keyword
 var shield_active = 0
-var shielded # animation keyword
-var struck # animation keyword
+var shielded = 0 # animation keyword
+var struck = 0 # animation keyword
 var buffed = 0 # animation keyword
 var debuffed = 0 # animation keyword
 var populate = "spells"
 var status = "alive"
 # life pool is stored in this variable local["life_pool"] 0 is theoretical and 1 is current
+@onready var tilemap: TileMap = $"../../TileMap"
+var current_tile : Vector2i
+
 
 func _ready():
 	attacks = 70
@@ -49,7 +52,7 @@ func show_chara_stats(charac):
 	if charac== null:
 		print(charac.name)
 	if(local!=null):
-		print(local["action_hand"].size())
+		#print(local["action_hand"].size())
 		categorize_cards(local["action_hand"])
 		var string5 = "../../Active_Character/Label2"
 		get_node(string5).text = str(local["name"])
@@ -391,12 +394,14 @@ func cast_spells(spell,caster,targets) ->bool:
 			var target_sprite = targets.get_node("AnimatedSprite2D")
 			target_sprite.play("default")
 		else:
-			for target in targets:
-				target.healed = 0
-				target.struck = 0
-				target.shielded = 0
-				var target_sprite = target.get_node("AnimatedSprite2D")
-				target_sprite.play("default")
+			if targets is  Array:
+				for target in targets:
+					if target is CharacterBody2D:
+						print(target)
+						target.healed = 0
+						target.struck = 0
+						var target_sprite = target.get_node("AnimatedSprite2D")
+						target_sprite.play("default")
 		return true
 	return false
 
@@ -568,8 +573,11 @@ func gain_to_life_pool(lives,blocks,parries,shields,buffs): #Todo *4
 		print(local["life_pool"][1])
 		return
 	if shields>0:
-		if local["life_pool"][1].length()< local["life_pool"][0].length()*2:
-			if local["life_pool"][0].length()*2 - (local["life_pool"][1].length() + shields) <= 0:
+		print(shields)
+		print(local["life_pool"][1].length())
+		print(local["life_pool"][0].length())
+		if local["life_pool"][1].length() < local["life_pool"][0].length()*2:
+			if local["life_pool"][0].length()*2 - (local["life_pool"][1].length() + shields) >= 0:
 				for blockss in shields:
 					local["life_pool"][1] += "s"
 			else: 
@@ -869,6 +877,23 @@ func lifepool_checker(string_to_check: String, letter_to_check: String) -> int:
 			count += 1
 	return count
 
+#Better Grid movement
+#func move(direction: Vector2):
+	#print(direction)
+	#current_tile = tilemap.local_to_map(position)
+	#var target_tile: Vector2i = Vector2i(
+		#current_tile.x + direction.x,
+		#current_tile.y + direction.y,
+	#)
+	#prints(current_tile, target_tile)
+	#var tile_data : TileData = tilemap.get_cell_tile_data(0,target_tile)
+	#print(tile_data)
+	#if tile_data == null:
+		#return
+	##print("walkable")
+	#position.x += direction.x
+	#position.y += direction.y
+
 # General Movement and animation processsing
 func _physics_process(delta):
 	var horizontal_direction = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -876,7 +901,6 @@ func _physics_process(delta):
 	attacking = Input.get_action_strength("attack")
 	casting = Input.get_action_strength("cast")
 	acting = Input.get_action_strength("action")
-	#var healing = healed
 	# Only move if this character is the active character
 	if self == get_parent().get_parent().active_character:
 		# Horizontal movement
@@ -890,9 +914,11 @@ func _physics_process(delta):
 				velocity.x = move_toward(velocity.x, 0, SPEED)
 			if horizontal_direction > 0:
 				$AnimatedSprite2D.animation = "walk_right"
+				#move(Vector2.RIGHT)
 				$AnimatedSprite2D.flip_h = false
 			else:
 				$AnimatedSprite2D.animation = "walk_left"
+				#move(Vector2.LEFT)
 				$AnimatedSprite2D.flip_h = true
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -902,13 +928,16 @@ func _physics_process(delta):
 			if(movecapital>0):
 				velocity.y = vertical_direction * SPEED
 				movecapital = movecapital -1
-				#print("Vertical move " + str(movecapital))
+				var string5 = "../../Active_Character/Label4"
+				get_node(string5).text = "Move points : "+str(movecapital) +'\n' 
 			if(movecapital==0):
 				velocity.y = move_toward(velocity.y, 0, SPEED)
 			if vertical_direction > 0:
 				$AnimatedSprite2D.animation = "walk_down"
+				#move(Vector2.DOWN)
 			else:
 				$AnimatedSprite2D.animation = "walk_up"
+				#move(Vector2.UP)
 		else:
 			velocity.y = move_toward(velocity.y, 0, SPEED)
 			
@@ -942,9 +971,10 @@ func _physics_process(delta):
 						if(v==false):
 							v = use_action(checked_actions,self,action_target)
 				else:
-					acting = false
-					#print(action_target)
-					print("No actions remaining !")
+					pass
+					#acting = false
+					##print(action_target)
+					#print("No actions remaining !")
 			else:
 				$AnimatedSprite2D.animation = "default"
 		#else:
