@@ -4,6 +4,9 @@ var chara
 var enemies
 const SPEED = 96.0
 var movecapital
+var attack_pool = 0
+var casts = [0,0,0,0]
+var actions = 0
 var range_array = [26,35,40,46,56,65,75,85,95,105,115,124,134,144] #14 ranges
 var life_pool = "lbplllll"
 var status = "active"
@@ -113,8 +116,29 @@ func _ready():
 		for element in elements:
 			if element.name == name:
 				local = element
-				#prints(local.name, local.agility)
-	
+				movecapital = 105
+				prints(local.name, local.action_pool)
+
+#TODO fix functions
+func show_chara_stats(local):
+	if local== null:
+		print(local.name)
+	if(local!=null):
+		#print(local["action_hand"].size())
+		#categorize_cards(local["action_pool"])
+		var string5 = "../../Active_Character/Label2"
+		get_node(string5).text = str(name)
+		string5 = "../../Active_Character/Label4"
+		get_node(string5).text = "Move points : "+str(movecapital) +'\n'
+		string5 = "../../Active_Character/Label3"
+		#get_node(string5).text = "Action uses : "+str(actions) +'\n'
+		string5 = "../../Active_Character/Label5"
+		#get_node(string5).text = "Casts : " + str(casts)+'\n'
+		string5 = "../../Active_Character/Label6"
+		#get_node(string5).text = "Attacks : " + str(attack_pool)+'\n'
+
+func _process(_delta):
+	pass
 
 func _physics_process(_delta: float) -> void:
 	if movecapital == 105:
@@ -135,6 +159,8 @@ func _physics_process(_delta: float) -> void:
 		$AnimatedSprite2D.animation = "default"
 		if struck == 1:
 			$AnimatedSprite2D.animation = "struck"
+		if status == "dead":
+			$AnimatedSprite2D.animation = "death"
 	move_and_slide()
 
 func makepath() -> void:
@@ -152,6 +178,8 @@ func makepath() -> void:
 
 # Function to simulate taking damage by randomly removing characters from the life pool
 func take_damage(damage_amount,special):
+	prints(damage_amount)
+	damage_amount+= 10
 	var random = RandomNumberGenerator.new()  # Create a random number generator
 	random.randomize()  # Seed the RNG with a random value
 
@@ -168,38 +196,169 @@ func take_damage(damage_amount,special):
 		if special == "critical" and life_pool_array[index]=="l":
 			damage_amount += 1
 			pass
-		print(life_pool_array[index])
+		#print(life_pool_array[index])
 		if(life_pool_array[index]=="p"):
 			parried = true
 		if(life_pool_array[index]=="b"):
 			blocked = true
 		life_pool_array.remove_at(index)  # Remove the character at the random index
 		damage_amount -= 1  # Decrement the damage amount
-		if blocked==true and special != "rend":
-			break
+		#if blocked==true and special != "rend":
+			#break
 		if life_pool_array.size() == 0:
 			$AnimatedSprite2D.animation = "death"
-			while $AnimatedSprite2D.is_playing():
-				await(get_tree().create_timer(0.1).timeout)
+			#while $AnimatedSprite2D.is_playing():
+				#await(get_tree().create_timer(0.1).timeout)
 			$CollisionShape2D.set_deferred("disabled", true)
-			$AnimatedSprite2D.stop()
+			var level = get_parent().get_parent()
+			level.roaster_remove(self)
+			print(level.roaster)
+			#$AnimatedSprite2D.stop()
 			status = "dead"
+			print("upper dead")
 			return "Dead"
+		
 	# Convert the modified array back to a string
 	life_pool = "".join(life_pool_array)
-
+	print(life_pool)
 	# Check if there are any 'l' characters left in the updated life pool
 	if 'l' not in life_pool:
 		$AnimatedSprite2D.animation = "death"
-		while $AnimatedSprite2D.is_playing():
-			await(get_tree().create_timer(0.1).timeout)
+		#while $AnimatedSprite2D.is_playing():
+			#await(get_tree().create_timer(0.1).timeout)
 		$CollisionShape2D.set_deferred("disabled", true)
-		$AnimatedSprite2D.stop()
+		#$AnimatedSprite2D.stop()
 		status = "dead"
+		print("lower dead")
+		var level = get_parent().get_parent()
+		level.roaster_remove(self)
 		return "Dead"
 	print(life_pool)
 	return life_pool  # Otherwise, return the updated life pool
 
+func recycler(player):
+	var irn = 0
+	if player.movecapital>=22:
+		player.local["action_pool"][1].append("YARD")
+		irn += 1
+	if player.attack_pool >= 1:
+		for attack in player.attack_pool:
+			player.local["action_pool"][1].append("ATK")
+			irn += 1
+			if irn >= 5:
+				return
+	if player.casts != [0,0,0,0]:
+		for i in range (0,4):
+			if player.casts[i]>0:
+				player.local["action_pool"][1].append("T"+str(i+1)+"C")
+				irn += 1
+				if irn >= 5:
+					return
+	if player.actions != 0:
+		for action in player.actions:
+			player.local["action_pool"][1].append("AC")
+			irn += 1
+			if irn >= 5:
+				return
+
+func lose_to_action_hand(attacks,move,action_cards,T1casts,T2casts,T3casts,T4casts,random):
+	print("Enemy action loss")
+	return
+	if attacks>0:
+		for attack in attacks:
+			local["action_hand"].erase("ATK")
+	if move>0:
+		for yard in move:
+			local["action_hand"].erase("YARD")
+	if action_cards>0:
+		for action in action_cards:
+			local["action_hand"].erase("AC")
+	if T1casts>0:
+		for T1cast in T1casts:
+			local["action_hand"].erase("T1C")
+	if T2casts>0:
+		for T1cast in T2casts:
+			local["action_hand"].erase("T2C")
+	if T3casts>0:
+		for T1cast in T3casts:
+			local["action_hand"].erase("T3C")
+	if T4casts>0:
+		for T1cast in T4casts:
+			local["action_hand"].erase("T4C")
+	if random>0:
+			var rng = RandomNumberGenerator.new()
+			rng.randomize()
+			for ran in random:
+				var random_number = rng.randi_range(0, 69)
+				if random_number < 10 and random_number >=0:
+					local["action_hand"].erase("YARD")
+				if random_number < 20 and random_number >=10:
+					local["action_hand"].erase("AC")
+				if random_number < 30 and random_number >=20:
+					local["action_hand"].erase("T1C")
+				if random_number < 40 and random_number >=30:
+					local["action_hand"].erase("T2C")
+				if random_number < 50 and random_number >=40:
+					local["action_hand"].erase("T3C")
+				if random_number < 60 and random_number >=50:
+					local["action_hand"].erase("T4C")
+				if random_number < 70 and random_number >=60:
+					local["action_hand"].erase("ATK")
+	#print(local["action_hand"])
+	#print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
+	#print("Action lost")
+	pass
+
+
+func draw_card_deck_hand(player):
+	var rng = RandomNumberGenerator.new()
+	var new_array = []
+	
+	var draw_count = min(local["action_pool"][1].size(), 5)
+	#print(str(local["action_pool"][1]))
+	
+	for i in range(draw_count):
+		var index = rng.randi_range(0, player.local["action_pool"][1].size() - 1)
+		var element = player.local["action_pool"][1][index]
+		new_array.append(element)
+		player.local["action_pool"][1].remove_at(index)
+		#print(str(local["action_pool"][1].size()))
+	#print(local["action_hand"].size())
+	player.local["action_hand"] = new_array
+	#print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
+	print("Draw done")
+	pass
+
 func end_turn():
+	for n in range(0, 4):
+		var real = n+1
+		var string3 = "../../Spell_cont_t"+str(real)
+		var node = get_node(string3)
+		var string4 = "../../Action_cont_t"+str(real)
+		var node2 = get_node(string4)
+		for m in node.get_children():
+			node.remove_child(m)
+			m.queue_free()
+		for m in node2.get_children():
+			node2.remove_child(m)
+			m.queue_free()
+	var string4 = "../../Spells_and_abilities/Spell_Container"
+	var parent_node = get_node(string4)
+	for m in parent_node.get_children():
+					parent_node.remove_child(m)
+					m.queue_free()
+	string4 = "../../Spells_and_abilities/Ability_Container"
+	parent_node = get_node(string4)
+	for m in parent_node.get_children():
+					parent_node.remove_child(m)
+					m.queue_free()
+	for n in range(1, 5):
+			var string5 = "../../GridContainer"
+			var node = get_node(string5)
+			var count = 0
+			for m in node.get_children():
+				if count < 0:
+					m.hide()
+					count += 1
 	var level = get_parent().get_parent()
 	level.next_character()

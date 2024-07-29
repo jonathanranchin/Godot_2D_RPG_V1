@@ -50,9 +50,10 @@ func _ready():
 
 func show_chara_stats(charac):
 	if charac== null:
-		print(charac.name)
+		pass
+		#print(charac.name)
 	if(local!=null):
-		#print(local["action_hand"].size())
+		##print(local["action_hand"].size())
 		categorize_cards(local["action_hand"])
 		var string5 = "../../Active_Character/Label2"
 		get_node(string5).text = str(local["name"])
@@ -127,8 +128,8 @@ func on_target_spell_button_pressed(max_range,min_range,spell):#spell is complet
 		var arr = []
 		var all = chara
 		arr.append(range_finder(all,max_range,min_range,spell["type"]))
-		print( str(max_range)+' '+str(min_range)+' '+str(spell["type"])+' '+str(enemies) )
-		print(arr)
+		#print( str(max_range)+' '+str(min_range)+' '+str(spell["type"])+' '+str(enemies) )
+		#print(arr)
 		in_attack_range = true
 		var button = Button.new()
 		var string4 = "../../Spells_and_abilities/Spell_Container"
@@ -145,8 +146,8 @@ func on_target_action_button_pressed(max_range,min_range,action):
 		var arr = []
 		var all = chara
 		arr.append(range_finder(all,max_range,min_range,action["target/test"][0]))
-		print( str(max_range)+' '+str(min_range)+' '+str(action["target/test"][0]))
-		print(arr)
+		#print( str(max_range)+' '+str(min_range)+' '+str(action["target/test"][0]))
+		#print(arr)
 		in_attack_range = true
 		var button = Button.new()
 		var string4 = "../../Spells_and_abilities/Ability_Container"
@@ -164,7 +165,7 @@ func action_bind_chooser(spell,targets):
 	if spell["name"] == "Inspirational Address" or spell["name"] == "Unified Purpose":
 		spell_target = chara
 		action_target = chara
-		print(spell["name"] + " has "+ str(spell_target) + " as targets")
+		#print(spell["name"] + " has "+ str(spell_target) + " as targets")
 		var button = Label.new()
 		var string4 = "../../Spells_and_abilities/Ability_Container"
 		var parent_node = get_node(string4)
@@ -186,7 +187,7 @@ func spell_bind_chooser(spell,targets):
 	checked_spell = spell
 	if spell["name"] == "Shielding Aura" or spell["name"] == "Celestial Reckoning" or spell["name"]== "Frost Nova" or spell["name"] == "Inferno Burst":
 		spell_target = targets
-		print(spell["name"] + " has "+ str(targets) + " as targets")
+		#print(spell["name"] + " has "+ str(targets) + " as targets")
 		var button = Label.new()
 		var string4 = "../../Spells_and_abilities/Spell_Container"
 		var parent_node = get_node(string4)
@@ -220,7 +221,7 @@ func action_target_chooser(target):
 	var parent_node = get_node(string4)
 	button.text += checked_actions["name"]+ " has \n"+ str(action_target.name) + "\nas target"
 	parent_node.add_child(button)
-	print(checked_actions["name"]+ " has "+ str(action_target.name) + " as target")
+	#print(checked_actions["name"]+ " has "+ str(action_target.name) + " as target")
 
 func spell_target_chooser(target):
 	spell_target = target
@@ -237,7 +238,7 @@ func warp_direction_choice(choice):
 	var parent_node = get_node(string4)
 	button.text += checked_spell["name"]+ " has\n"+ str(choice) + " as direction"
 	parent_node.add_child(button)
-	print(checked_spell["name"]+ " has "+ str(choice) + " as direction")
+	#print(checked_spell["name"]+ " has "+ str(choice) + " as direction")
 
 func change_spell_tier(tier):
 	for n in range(1, 5):
@@ -281,18 +282,18 @@ func cycle_spells_actions():
 			if self.casts[real] >= 1 and count == 0:
 				node.show()
 				node2.show()
-				#print(self.casts)
+				##print(self.casts)
 				count += 1
 			else:
 				if self.casts[real] >= 1:
-					#print(casts)
+					##print(casts)
 					node2.show()
 					node.hide()
 		for n in range(1, 5):
 			var string4 = "../../Action_cont_t"+str(n)
 			var node = get_node(string4)
 			node.hide()
-		#print("____________")
+		##print("____________")
 
 func cast_spells(spell,caster,targets) ->bool:
 	casting = true
@@ -314,11 +315,11 @@ func cast_spells(spell,caster,targets) ->bool:
 					target.shield_active = 1
 		if spell["type"]=="ATK":
 			if targets is CharacterBody2D:
-				print("struck")
+				#print("struck")
 				targets.struck = 1
 			else:
 				for target in targets[0]:
-					print("struck")
+					#print("struck")
 					target.struck = 1
 		casty -= 1
 		return false
@@ -343,9 +344,9 @@ func cast_spells(spell,caster,targets) ->bool:
 				target.gain_to_life_pool(1,0,0,4,0);
 				target.take_damage(8,"magic")
 		if spell["name"] == "Arcane Bolt" and targets is CharacterBody2D:
-			targets.take_damage(3,"magic")
+			targets.take_damage(30,"magic")
 		if spell["name"] == "Elemental Dart" and targets is CharacterBody2D:
-			targets.take_damage(3,"magic")
+			targets.take_damage(40,"magic")
 		if spell["name"] == "Life Siphon" and targets is CharacterBody2D:
 			targets.take_damage(5,"magic")
 			caster.gain_to_life_pool(5,0,0,0,0);
@@ -369,8 +370,8 @@ func cast_spells(spell,caster,targets) ->bool:
 				target.take_damage(6,"magic")
 		if(spell["tier"]=="1"):
 			casts[0] -= 1
-			print(casts)
-			print(local["action_hand"])
+			#print(casts)
+			#print(local["action_hand"])
 		if(spell["tier"]=="2"):
 			casts[1] -= 1
 		if(spell["tier"]=="3"):
@@ -385,7 +386,7 @@ func cast_spells(spell,caster,targets) ->bool:
 		for m in parent_node.get_children():
 						parent_node.remove_child(m)
 						m.queue_free()
-		print("Cast Complete")
+		#print("Cast Complete")
 		$AnimatedSprite2D.animation = "default"
 		if targets is CharacterBody2D:
 			targets.healed = 0
@@ -397,7 +398,7 @@ func cast_spells(spell,caster,targets) ->bool:
 			if targets is  Array:
 				for target in targets:
 					if target is CharacterBody2D:
-						print(target)
+						#print(target)
 						target.healed = 0
 						target.struck = 0
 						var target_sprite = target.get_node("AnimatedSprite2D")
@@ -407,11 +408,11 @@ func cast_spells(spell,caster,targets) ->bool:
 
 func use_action(action,actor,targets) -> bool:
 	if actions <= 0:
-		print("Out of actions")
+		#print("Out of actions")
 		return false
 	acting = true
-	print(acty)
-	print(action["target/test"][0])
+	#print(acty)
+	#print(action["target/test"][0])
 	if acty > 0 and action["target/test"][0] == "Ally":
 		$AnimatedSprite2D.animation = "acting_positive"
 		if targets is CharacterBody2D:
@@ -422,7 +423,7 @@ func use_action(action,actor,targets) -> bool:
 		acty -= 1
 		return false
 	if acty > 0 and action["target/test"][0] == "Enemy":
-		print("de_buffing")
+		#print("de_buffing")
 		$AnimatedSprite2D.play("acting_negative")
 		if targets is CharacterBody2D:
 			targets.debuffed = 1
@@ -466,7 +467,7 @@ func use_action(action,actor,targets) -> bool:
 					get_node(string5).text = "Attacks : " + str(attack_pool)+'\n'
 					string5 = "../../Active_Character/Label4"
 					get_node(string5).text = "Move points : "+str(movecapital) +'\n'
-				print(target.local["action_hand"])
+				#print(target.local["action_hand"])
 				pass
 				#target.gain_to_life_pool(0,0,0,1,0);
 		if action["name"]== "Inspirational Address" and targets.size()>=1:
@@ -487,7 +488,7 @@ func use_action(action,actor,targets) -> bool:
 		for m in parent_node.get_children():
 						parent_node.remove_child(m)
 						m.queue_free()
-		print("Action Complete")
+		#print("Action Complete")
 		
 		if targets is CharacterBody2D:
 			targets.healed = 0
@@ -513,7 +514,7 @@ func use_action(action,actor,targets) -> bool:
 	return false
 
 func warp(meters,direction): #neeed to research
-	print(position)
+	#print(position)
 	#var position = Vector2(position[0] + spell_ranges[meters-1], position[1])
 	var new_position
 	if direction == 'bot':
@@ -525,7 +526,7 @@ func warp(meters,direction): #neeed to research
 	elif direction == 'left':
 		new_position = Vector2(position[0] - spell_ranges[meters], position[1])
 	position = new_position
-	print(position)
+	#print(position)
 	$AnimatedSprite2D.animation = "default"
 	pass
 
@@ -540,9 +541,9 @@ func gain_to_life_pool(lives,blocks,parries,shields,buffs): #Todo *4
 				for life in missing_life:
 					local["life_pool"][1] += "l"
 		else:
-			print("Character has full lifepoints and cannot be healed")
+			#print("Character has full lifepoints and cannot be healed")
 			return
-		print(local["life_pool"][1])
+		#print(local["life_pool"][1])
 		return
 	if blocks>0:
 		if lifepool_checker(local["life_pool"][1],"b")< lifepool_checker(local["life_pool"][0],"b")+1:
@@ -554,9 +555,9 @@ func gain_to_life_pool(lives,blocks,parries,shields,buffs): #Todo *4
 				for blockss in missing_blocks:
 					local["life_pool"][1] += "b"
 		else:
-			print("Character has full blocks and cannot get anymore")
+			#print("Character has full blocks and cannot get anymore")
 			return
-		print(local["life_pool"][1])
+		#print(local["life_pool"][1])
 		return
 	if parries>0:
 		if lifepool_checker(local["life_pool"][1],"p")< lifepool_checker(local["life_pool"][0],"p")+4:
@@ -568,14 +569,14 @@ func gain_to_life_pool(lives,blocks,parries,shields,buffs): #Todo *4
 				for blockss in missing_parries:
 					local["life_pool"][1] += "p"
 		else:
-			print("Character has maximum parries and cannot get anymore")
+			#print("Character has maximum parries and cannot get anymore")
 			return
-		print(local["life_pool"][1])
+		#print(local["life_pool"][1])
 		return
 	if shields>0:
-		print(shields)
-		print(local["life_pool"][1].length())
-		print(local["life_pool"][0].length())
+		#print(shields)
+		#print(local["life_pool"][1].length())
+		#print(local["life_pool"][0].length())
 		if local["life_pool"][1].length() < local["life_pool"][0].length()*2:
 			if local["life_pool"][0].length()*2 - (local["life_pool"][1].length() + shields) >= 0:
 				for blockss in shields:
@@ -584,9 +585,9 @@ func gain_to_life_pool(lives,blocks,parries,shields,buffs): #Todo *4
 				for blockss in shields/2:
 					local["life_pool"][1] += "s"
 		else:
-			print("Character has maximum shields and cannot get anymore")
+			#print("Character has maximum shields and cannot get anymore")
 			return
-		print(local["life_pool"][1])
+		#print(local["life_pool"][1])
 		return
 	if buffs>0:
 		if lifepool_checker(local["life_pool"][1],"u")< lifepool_checker(local["life_pool"][0],"u")+3:
@@ -598,11 +599,11 @@ func gain_to_life_pool(lives,blocks,parries,shields,buffs): #Todo *4
 				for blockss in missing_parries:
 					local["life_pool"][1] += "u"
 		else:
-			print("Character has maximum buffs and cannot get anymore")
+			#print("Character has maximum buffs and cannot get anymore")
 			return
-		print(local["life_pool"][1])
+		#print(local["life_pool"][1])
 		return
-	print(local["life_pool"][1])
+	#print(local["life_pool"][1])
 	return
 
 #not implemented to characters (must be added to enemies for alpha)
@@ -617,7 +618,7 @@ func lose_to_life_pool(lives,blocks,parries,shields,buffs):
 		pass
 	if buffs>0:
 		pass
-	print(local["life_pool"][1])
+	#print(local["life_pool"][1])
 
 func gain_to_action_hand(attacks,move,action_cards,T1casts,T2casts,T3casts,T4casts,random):
 	#if self == get_parent().get_parent().active_character:
@@ -700,10 +701,10 @@ func gain_to_action_hand(attacks,move,action_cards,T1casts,T2casts,T3casts,T4cas
 				casts[3] +=1
 			if random_number < 70 and random_number >=60:
 				attack_pool +=1
-	#print(str(movecapital) +' '+  str(actions)+ ' '+  str(casts)+' '+  str(attack_pool))
-	print(local["action_hand"])
-	print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
-	print("Action gain")
+	##print(str(movecapital) +' '+  str(actions)+ ' '+  str(casts)+' '+  str(attack_pool))
+	#print(local["action_hand"])
+	#print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
+	#print("Action gain")
 
 func lose_to_action_hand(attacks,move,action_cards,T1casts,T2casts,T3casts,T4casts,random):
 	if attacks>0:
@@ -746,9 +747,9 @@ func lose_to_action_hand(attacks,move,action_cards,T1casts,T2casts,T3casts,T4cas
 					local["action_hand"].erase("T4C")
 				if random_number < 70 and random_number >=60:
 					local["action_hand"].erase("ATK")
-	print(local["action_hand"])
-	print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
-	print("Action lost")
+	#print(local["action_hand"])
+	#print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
+	#print("Action lost")
 	pass
 
 func draw_card_deck_hand(player):
@@ -756,18 +757,14 @@ func draw_card_deck_hand(player):
 	var new_array = []
 	
 	var draw_count = min(local["action_pool"][1].size(), 5)
-	#print(str(local["action_pool"][1]))
 	
 	for i in range(draw_count):
 		var index = rng.randi_range(0, player.local["action_pool"][1].size() - 1)
 		var element = player.local["action_pool"][1][index]
 		new_array.append(element)
 		player.local["action_pool"][1].remove_at(index)
-		#print(str(local["action_pool"][1].size()))
-	#print(local["action_hand"].size())
 	player.local["action_hand"] = new_array
-	#print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
-	print("Draw done")
+	#print("Draw done")
 	pass
 
 func take_damage(damage_amount,special):
@@ -787,7 +784,7 @@ func take_damage(damage_amount,special):
 		if special == "critical" and life_pool_array[index]=="l":
 			damage_amount += 1 
 			pass
-		print(life_pool_array[index])
+		#print(life_pool_array[index])
 		if(life_pool_array[index]=="p"):
 			parried = true
 		if(life_pool_array[index]=="b"):
@@ -816,7 +813,7 @@ func take_damage(damage_amount,special):
 		$AnimatedSprite2D.stop()
 		status = "dead"
 		return "Dead"
-	print(local["life_pool"][1])
+	#print(local["life_pool"][1])
 	return local["life_pool"][1]  # Otherwise, return the updated life pool
 
 # used for hand processing
@@ -860,9 +857,9 @@ func categorize_cards(card_array):
 	actions = action
 	attack_pool = atk
 	movecapital = move_array[move]
-	#print(local["action_hand"])
+	##print(local["action_hand"])
 	#local["action_hand"] = []
-	#print(str(casts)+' '+ str(actions)+' '+str(attack_pool)+ ' '+str(movecapital))
+	##print(str(casts)+' '+ str(actions)+' '+str(attack_pool)+ ' '+str(movecapital))
 
 func lifepool_checker(string_to_check: String, letter_to_check: String) -> int:
 	# Ensure that the letter_to_check is a single character
@@ -876,23 +873,6 @@ func lifepool_checker(string_to_check: String, letter_to_check: String) -> int:
 		if string_to_check[i] == letter_to_check:
 			count += 1
 	return count
-
-#Better Grid movement
-#func move(direction: Vector2):
-	#print(direction)
-	#current_tile = tilemap.local_to_map(position)
-	#var target_tile: Vector2i = Vector2i(
-		#current_tile.x + direction.x,
-		#current_tile.y + direction.y,
-	#)
-	#prints(current_tile, target_tile)
-	#var tile_data : TileData = tilemap.get_cell_tile_data(0,target_tile)
-	#print(tile_data)
-	#if tile_data == null:
-		#return
-	##print("walkable")
-	#position.x += direction.x
-	#position.y += direction.y
 
 # General Movement and animation processsing
 func _physics_process(delta):
@@ -914,15 +894,12 @@ func _physics_process(delta):
 				velocity.x = move_toward(velocity.x, 0, SPEED)
 			if horizontal_direction > 0:
 				$AnimatedSprite2D.animation = "walk_right"
-				#move(Vector2.RIGHT)
 				$AnimatedSprite2D.flip_h = false
 			else:
 				$AnimatedSprite2D.animation = "walk_left"
-				#move(Vector2.LEFT)
 				$AnimatedSprite2D.flip_h = true
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
-
 		# Vertical movement
 		if vertical_direction != 0:
 			if(movecapital>0):
@@ -934,13 +911,10 @@ func _physics_process(delta):
 				velocity.y = move_toward(velocity.y, 0, SPEED)
 			if vertical_direction > 0:
 				$AnimatedSprite2D.animation = "walk_down"
-				#move(Vector2.DOWN)
 			else:
 				$AnimatedSprite2D.animation = "walk_up"
-				#move(Vector2.UP)
 		else:
 			velocity.y = move_toward(velocity.y, 0, SPEED)
-			
 		# Set default attack
 		if horizontal_direction == 0 and vertical_direction == 0:
 			if(int(attacking)>0):
@@ -949,7 +923,8 @@ func _physics_process(delta):
 					if(v==false):
 						v = attack()
 				else:
-					print("No attacks remaining !")
+					pass
+					#print("No attacks remaining !")
 		# Set spell actions
 		if horizontal_direction == 0 and vertical_direction == 0 and int(attacking) == 0:
 			if(int(casting)>0):
@@ -960,7 +935,7 @@ func _physics_process(delta):
 						v = cast_spells(checked_spell,self,spell_target) #spell,caster,targets
 				else:
 					pass
-					#print("No casts remaining !")
+					##print("No casts remaining !")
 			#else:
 				#$AnimatedSprite2D.animation = "default"
 		if horizontal_direction == 0 and vertical_direction == 0 and int(attacking) == 0 and int(casting)==0:
@@ -972,11 +947,8 @@ func _physics_process(delta):
 							v = use_action(checked_actions,self,action_target)
 				else:
 					pass
-					#acting = false
-					##print(action_target)
-					#print("No actions remaining !")
 			else:
-				$AnimatedSprite2D.animation = "default"
+				$AnimatedSprite2D.animation = "active"
 		#else:
 			#$AnimatedSprite2D.animation = "default"
 		move_and_slide()
@@ -989,8 +961,8 @@ func _physics_process(delta):
 			$AnimatedSprite2D.animation = "buffed"
 		if debuffed == 1:
 			$AnimatedSprite2D.animation = "debuffed"
-		#else:
-			#$AnimatedSprite2D.animation = "default"
+		else:
+			$AnimatedSprite2D.animation = "default"
 
 var detection_radius = 30
 
@@ -1008,15 +980,15 @@ func range_finder(characters,max_range,min_range,target) -> Array:
 				navigation_agent.target_position = character.global_position
 				var distance = navigation_agent.distance_to_target()
 				if distance<=detection_radius and distance >= close_radius:
-					print(target)
+					#print(target)
 					if target == "SHD" or target == "HEAL" or target == "Ally":
 						result.append(character)
-						print(character)
+						#print(character)
 				if(distance<dist):
 					dist = distance
 					tar = character
-				#print(get_parent().get_parent().active_character.name+ " " + str(distance)+ " " + character.name)
-		#print("____________________________________________________")
+				##print(get_parent().get_parent().active_character.name+ " " + str(distance)+ " " + character.name)
+		##print("____________________________________________________")
 		for enemy in enemies:
 			if enemy:
 				var tar
@@ -1029,17 +1001,17 @@ func range_finder(characters,max_range,min_range,target) -> Array:
 				if distance<=detection_radius and distance >= close_radius:
 						if target == "Enemy":
 							result.append(enemy)
-							print(enemy)
+							##print(enemy)
 				if(distance<dist):
 					dist = distance
 					tar = enemy
-					#print(get_parent().get_parent().active_character.name+ " " + str(distance)+ " " + enemy.name)
-		#print("____________________________________________________")
+					##print(get_parent().get_parent().active_character.name+ " " + str(distance)+ " " + enemy.name)
+		##print("____________________________________________________")
 		if result != []:
 			if close_radius == 0:
 				if target == "SHD" or target == "HEAL" or target == "UTI" or target == "Ally":
 					result.append(get_parent().get_parent().active_character)
-			#print(result)
+			##print(result)
 		if max_range==0 and min_range == 0:
 			result.append(get_parent().get_parent().active_character)
 	return(result)
@@ -1055,7 +1027,7 @@ func attack() -> bool:
 		get_node(string5).text = "Attacks : " + str(attack_pool)+'\n'
 		attacks = 70
 		if offensive_weapon:
-			print(offensive_weapon["damage"])
+			#print(offensive_weapon["damage"])
 			attack_target.take_damage(local["damage"]+offensive_weapon["damage"],offensive_weapon["special"])
 		else:
 			attack_target.take_damage(local["damage"]+local["weapons_equiped"][0]["damage"],local["weapons_equiped"][0]["special"])
@@ -1069,7 +1041,7 @@ func remove_first_card(card_array, card_type):
 		if card != card_type:
 			return_arr.append(card)
 			break
-	#print(str(return_arr) + ' ' + card_type)
+	##print(str(return_arr) + ' ' + card_type)
 	return return_arr
 
 func _process(delta):
@@ -1080,7 +1052,7 @@ func _process(delta):
 				if local["weapons_equiped"][0]["range"] < local["weapons_equiped"][1]["range"]:
 					weapon_range = local["weapons_equiped"][1]["range"]
 			var arr = range_finder(chara,range_array[weapon_range],0,"ATK")
-			#print(arr)
+			##print(arr)
 			var string4 = "../../Active_Character/Attack_container"
 			var parent_node = get_node(string4)
 			if parent_node.get_children().size()==0 and attacks > 0:
@@ -1093,7 +1065,7 @@ func _process(delta):
 						button.text = str(target.name)
 						parent_node.add_child(button)
 						button.pressed.connect(self.on_target_button_pressed.bind(get_parent().get_parent().active_character,target))
-					#print(arr)
+					##print(arr)
 			if (arr.size()==0):
 				var string3 = "../../Active_Character/Label7"
 				var node = get_node(string3)
@@ -1133,9 +1105,6 @@ func recycler(player):
 
 # Function to handle the end turn action
 func end_turn():
-	#print(str(local["action_pool"][1].size())+ ' '+ str(irn))
-	#draw_card_deck_hand(get_parent().get_parent().active_character)
-	#print("new hand = " + str(local["action_hand"]))
 	for n in range(0, 4):
 		var real = n+1
 		var string3 = "../../Spell_cont_t"+str(real)
@@ -1170,7 +1139,7 @@ func end_turn():
 	level.next_character()
 
 func on_target_button_pressed(attacker,attacked):
-	print(str(attacker.name)+" can attack "+attacked.name)
+	#print(str(attacker.name)+" can attack "+attacked.name)
 	in_attack_range = true
 	attack_target = attacked
 	if(local["weapons_equiped"].size()>1):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=502 format=3 uid="uid://cng6jg0g3gs8x"]
+[gd_scene load_steps=505 format=3 uid="uid://cng6jg0g3gs8x"]
 
 [ext_resource type="Script" path="res://Levels/Level1.gd" id="1_e3l6u"]
 [ext_resource type="Texture2D" uid="uid://d0a6bf2hfdauq" path="res://Tiles/Second_Green.png" id="1_spofp"]
@@ -3794,6 +3794,18 @@ region = Rect2(64, 224, 32, 32)
 atlas = ExtResource("16_3sfcr")
 region = Rect2(96, 224, 32, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_eycm4"]
+atlas = ExtResource("17_0qbwm")
+region = Rect2(0, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kv3mq"]
+atlas = ExtResource("17_0qbwm")
+region = Rect2(32, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mt724"]
+atlas = ExtResource("17_0qbwm")
+region = Rect2(64, 96, 32, 32)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_5x2nr"]
 atlas = ExtResource("17_0qbwm")
 region = Rect2(96, 96, 32, 32)
@@ -3978,6 +3990,15 @@ animations = [{
 "speed": 5.0
 }, {
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eycm4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kv3mq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mt724")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5x2nr")
 }],
@@ -4633,7 +4654,7 @@ player = NodePath("../../Characters/character1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Enemies/Vera"]
 sprite_frames = SubResource("SpriteFrames_dtkm4")
-animation = &"death"
+animation = &"struck"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemies/Vera"]
@@ -4656,7 +4677,7 @@ player = NodePath("../../Characters/character1")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Enemies/Captain Varik"]
 position = Vector2(0.454529, 0)
 sprite_frames = SubResource("SpriteFrames_1qbx4")
-animation = &"death"
+animation = &"struck"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemies/Captain Varik"]
