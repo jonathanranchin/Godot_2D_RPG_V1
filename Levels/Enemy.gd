@@ -7,6 +7,7 @@ var movecapital
 var attack_pool = 0
 var casts = [0,0,0,0]
 var actions = 0
+var move_array = [10,22,43,64,85,106,127,148,169,190,203] # 10 move length
 var range_array = [26,35,40,46,56,65,75,85,95,105,115,124,134,144] #14 ranges
 var life_pool = "lbplllll"
 var status = "active"
@@ -117,15 +118,18 @@ func _ready():
 			if element.name == name:
 				local = element
 				movecapital = 105
-				prints(local.name, local.action_pool)
+				local.action_pool[1] = local.action_pool[0]
+				draw_card_deck_hand(local.action_pool[1])
+				prints(local.action_pool[1], local.action_hand)
+				#prints(local["action_pool"][1], local["action_hand"])
 
 #TODO fix functions
 func show_chara_stats(local):
 	if local== null:
-		print(local.name)
+		print(local)
 	if(local!=null):
-		#print(local["action_hand"].size())
-		#categorize_cards(local["action_pool"])
+		prints(self.local)
+		categorize_cards(self.local["action_hand"])
 		var string5 = "../../Active_Character/Label2"
 		get_node(string5).text = str(name)
 		string5 = "../../Active_Character/Label4"
@@ -141,7 +145,7 @@ func _process(_delta):
 	pass
 
 func _physics_process(_delta: float) -> void:
-	if movecapital == 105:
+	if movecapital >= 10:
 		makepath()
 	if self == get_parent().get_parent().active_character and status=="active":
 		var dir = to_local(navigation_agent.get_next_path_position()).normalized()
@@ -173,13 +177,11 @@ func makepath() -> void:
 		if(distance<dist):
 			dist = distance
 			tar = character
-		#print(distance)
 	navigation_agent.target_position = tar.global_position
 
 # Function to simulate taking damage by randomly removing characters from the life pool
 func take_damage(damage_amount,special):
 	prints(damage_amount)
-	damage_amount+= 10
 	var random = RandomNumberGenerator.new()  # Create a random number generator
 	random.randomize()  # Seed the RNG with a random value
 
@@ -318,16 +320,69 @@ func draw_card_deck_hand(player):
 	#print(str(local["action_pool"][1]))
 	
 	for i in range(draw_count):
-		var index = rng.randi_range(0, player.local["action_pool"][1].size() - 1)
-		var element = player.local["action_pool"][1][index]
+		var index = rng.randi_range(0, local["action_pool"][1].size() - 1)
+		var element = local["action_pool"][1][index]
 		new_array.append(element)
-		player.local["action_pool"][1].remove_at(index)
+		local["action_pool"][1].remove_at(index)
 		#print(str(local["action_pool"][1].size()))
 	#print(local["action_hand"].size())
-	player.local["action_hand"] = new_array
+	local["action_hand"] = new_array
 	#print(str(local["action_pool"][0].size())+' '+str(local["action_pool"][1].size()))
-	print("Draw done")
-	pass
+	#print(local["action_hand"])
+	#print("Draw done")
+	#pass
+
+# used for hand processing
+func categorize_cards(card_array):
+	var move = 0
+	var atk = 0
+	var action = 0
+	var spl = [0,0,0,0]
+	for card in card_array:
+		if card == "YARD":
+			move += 1
+			local["action_hand"] = remove_first_card(local["action_hand"], "YARD")
+		if card == "-YARD" or card == "-YARD,-YARD":
+			if card == "-YARD,-YARD":
+				local["action_hand"] =remove_first_card(local["action_hand"], "-YARD,-YARD")
+			if card == "-YARD":
+				local["action_hand"] = remove_first_card(local["action_hand"], "-YARD")
+			if(move>0):
+				move -= 1
+		elif card.begins_with("T") and card.ends_with("C"):
+			if(card == "T1C"):
+				spl[0] += 1
+				local["action_hand"] = remove_first_card(local["action_hand"], "T1C")
+			if(card == "T2C"):
+				spl[1] += 1
+				local["action_hand"] = remove_first_card(local["action_hand"], "T2C")
+			if(card == "T3C"):
+				spl[2] += 1
+				local["action_hand"] = remove_first_card(local["action_hand"], "T3C")
+			if(card == "T4C"):
+				spl[3] += 1
+				local["action_hand"] = remove_first_card(local["action_hand"], "T4C")
+		elif card == "AC":
+			action += 1
+			local["action_hand"] = remove_first_card(local["action_hand"], "AC")
+		elif card == "ATK":
+			atk += 1
+			local["action_hand"] = remove_first_card(local["action_hand"], "ATK")
+	for i in range (0,4):
+		casts[i] = spl[i]
+	actions = action
+	attack_pool = atk
+	movecapital = move_array[move]
+	prints(actions,attack_pool,movecapital)
+
+func remove_first_card(card_array, card_type):
+	var return_arr = []
+	for card in card_array:
+		if card != card_type:
+			return_arr.append(card)
+			break
+	##print(str(return_arr) + ' ' + card_type)
+	return return_arr
 
 func end_turn():
 	for n in range(0, 4):

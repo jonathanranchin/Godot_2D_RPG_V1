@@ -35,7 +35,7 @@ func initialize():
 		var random_number = randi_range(1, 15)
 		unit[2] = unit[1] * (unit[1]/2) + 5 + random_number
 	roaster = sort_array_by_third_element(roaster)
-	prints(roaster.size())
+	#prints(roaster.size())
 	# Set the active character to the first one
 	active_character = roaster[0][0]
 
@@ -78,12 +78,12 @@ func next_character():
 	active_character.show_chara_stats(roaster[current_character_index][0])
 	
 	if roaster[current_character_index][3] == "enemy":
-		active_character.movecapital = 105
-		print(roaster[current_character_index][3])
+		#active_character.movecapital = 105
+		#print(roaster[current_character_index][3])
 		active_character._physics_process(0)
 
 	if roaster[current_character_index][3] == "ally":
-		print(roaster[current_character_index][3])
+		#print(roaster[current_character_index][3])
 		active_character._process(0)
 
 		#turner = 1

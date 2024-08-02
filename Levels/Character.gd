@@ -344,9 +344,9 @@ func cast_spells(spell,caster,targets) ->bool:
 				target.gain_to_life_pool(1,0,0,4,0);
 				target.take_damage(8,"magic")
 		if spell["name"] == "Arcane Bolt" and targets is CharacterBody2D:
-			targets.take_damage(30,"magic")
+			targets.take_damage(3,"magic")
 		if spell["name"] == "Elemental Dart" and targets is CharacterBody2D:
-			targets.take_damage(40,"magic")
+			targets.take_damage(4,"magic")
 		if spell["name"] == "Life Siphon" and targets is CharacterBody2D:
 			targets.take_damage(5,"magic")
 			caster.gain_to_life_pool(5,0,0,0,0);
@@ -451,7 +451,7 @@ func use_action(action,actor,targets) -> bool:
 			targets.gain_to_action_hand(5,0,0,0,0,0,0,0)
 		if action["name"]== "Taunting Words" and targets is CharacterBody2D:
 			#Implement test hard easy SP
-			targets.gain_to_action_hand(1,0,0,0,0,0,0,0)
+			targets.lose_to_action_hand(1,0,0,0,0,0,0,0)
 		if action["name"]== "Charming Compliment" and targets is CharacterBody2D:
 			#Implement test easy SP
 			targets.gain_to_action_hand(0,1,0,0,0,0,0,0)
